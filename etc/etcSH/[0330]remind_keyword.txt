@@ -1,29 +1,31 @@
--  remind keyword (3.30 수)
-	01. AI 맨하튼 프로젝트
-	02. Block chain 
-	03. 4차 산업혁명
-	04. Natural language processing(NLP)
-	05. Deep learning(DL)
-	06. Machine learning(ML)
-	07. Multi perceptron
-	08. Digital twin
-	09. parameter
-	10. Reinforcement learning
-	11. Computer vision(CV) 
-	12. Artificial neural network
-	13. Digital literacy
-	14. Convolution neural network(CNN)
-	15. Deep neural network
-	16. Generative adversarial network(GAN)
-	17. 앨런튜링
-	18. Digital transformation
-	19. Object detection
-	20. CES
-	21. 패턴 인식
-	22. Deep fake
-	23. Supervised learning
-	24. Hidden layer
-	25. Unsupervised learning
+	-  remind keyword (3.30 수)
+01. AI 맨하튼 프로젝트
+02. Block chain 
+03. 4차 산업혁명
+04. Natural language processing(NLP)
+05. Deep learning(DL)
+06. Machine learning(ML)
+07. Multi perceptron
+08. Digital twin
+09. parameter
+10. Reinforcement learning
+11. Computer vision(CV) 
+12. Artificial neural network
+13. Digital literacy
+14. Convolution neural network(CNN)
+15. Deep neural network
+16. Generative adversarial network(GAN)
+17. 앨런튜링
+18. Digital transformation
+19. Object detection
+20. CES
+21. 패턴 인식
+22. Deep fake
+23. Supervised learning
+24. Hidden layer
+25. Unsupervised learning
 
-- 3.29(화) Remind keyword 정정
-	11. Metabus -> Metaverse
+	- 3.29(화) Remind keyword 정정
+11. Metabus -> Metaverse
+
+

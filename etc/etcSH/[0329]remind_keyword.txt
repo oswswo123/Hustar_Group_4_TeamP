@@ -9,7 +9,7 @@
 08. algorithm
 09. byte
 10. metadata
-11. metabus
+11. metaverse
 12. 추상화
 13. digital literacy
 14. 16진수
