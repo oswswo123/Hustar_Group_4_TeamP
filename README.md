@@ -2,3 +2,7 @@
 ### 3.29(화)
 - 개별 test directory 생성
 - src, ExtraLib, etc directory 생성
+
+### 3.30(수)
+- 개별 etc directory 생성
+- 3.30(수) 
