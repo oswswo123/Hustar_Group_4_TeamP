@@ -1,0 +1,11 @@
+Git 관련 메모
+- 매일 local branch 삭제 및 생성
+- 작업 시작하기전에 fetch - pull 이후 새 local branch에서 작업하기
+- 끝날 때 fetch - pull - add - commit - merge - push 하기
+
+- git clone <remote directory>
+	master를 clone
+- git clone -b <branch name> --single-branch <directory url>
+	특정 branch만 clone
+- git status
+- git fetch/pull/push <remote directory(origin)> <branch name>
