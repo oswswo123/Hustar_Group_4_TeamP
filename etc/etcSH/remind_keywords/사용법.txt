@@ -1,0 +1,9 @@
+# 사용법
+# 필수 file : all_remind_keyword.txt (비어있어도 됨)
+# input file 이름 예시 : [0329]today_input.txt
+# 날짜만 입력하면 today_output이 생성되고, all_remind_keyword가 update됨
+# today_output 이름 변경 후 all_remind_keyword 점검하기
+
+!!! 주의 !!!
+- 내 코딩 실력을 믿지 말자
+- 반드시 올리기 전 수동점검 하기
