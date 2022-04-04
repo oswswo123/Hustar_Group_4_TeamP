@@ -1,0 +1,26 @@
+	- remind keyword (3.30 수)
+01. AI 맨하튼 프로젝트
+02. Block chain
+03. 4차 산업혁명
+04. Natural language processing
+05. Deep learning
+06. Machine learning
+07. Multi perceptron
+08. Digital twin
+09. Parameter
+10. Reinforcement learning
+11. Computer vision
+12. Artificial neural network
+13. Digital literacy
+14. Convolution neural network
+15. Deep neural network
+16. Generative adversarial network
+17. 앨런튜링
+18. Digital transformation
+19. Object detection
+20. CES
+21. 패턴 인식
+22. Deep fake
+23. Supervised learning
+24. Hidden layer
+25. Unsupervised learning
