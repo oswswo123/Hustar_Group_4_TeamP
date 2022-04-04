@@ -20,5 +20,5 @@
 19. Ai hub
 20. Smart mirror
 21. Ai 국가 전략
-22. Bool 대수
+22. Boolean algebra
 23. Supervised learning
