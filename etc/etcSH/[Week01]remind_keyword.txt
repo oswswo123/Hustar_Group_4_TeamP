@@ -1,0 +1,65 @@
+01. 16진수
+02. 2진수
+03. 4차 산업혁명
+04. Ai
+05. Ai hub
+06. Ai 국가 전략
+07. Ai 맨하튼 프로젝트
+08. Ai 코엑스
+09. Algorithm
+10. Alphago
+11. Artificial neural network
+12. ASCII
+13. Bit
+14. Block chain
+15. Bool 대수
+16. Byte
+17. CES
+18. Computer vision(CV) 
+19. Convolution neural network(CNN)
+20. Context based learning
+21. Data labeling
+22. Deep fake
+23. Deep learning
+24. Deep neural network
+25. Digital literacy
+26. Digital new deal
+27. Digital transformation
+28. Digital twin
+29. Earth 2
+30. Generative adversarial network(GAN)
+31. GPT-3
+32. Green new deal
+33. Hidden layer
+34. IOT
+35. Machine learning(ML)
+36. Metadata
+37. Metaverse
+38. Module
+39. Multi perceptron
+40. Natural language processing(NLP)
+41. NFT
+42. Object detection
+43. Parameter
+44. Reinforcement learning
+45. Sandwich coding
+46. Siri
+47. Smart mirror
+48. Supervised learning
+49. UNICODE
+50. Unsupervised learning
+51. Web crawling
+52. 다중 인식
+53. 데이터 댐
+54. 등대 공장
+55. 문제해결능력
+56. 미래 자동화
+57. 앨런튜링
+58. 이루다
+59. 자료구조
+60. 전처리
+61. 제페토
+62. 지넷윙
+63. 추상화
+64. 컴퓨팅 사고력
+65. 패턴 인식
