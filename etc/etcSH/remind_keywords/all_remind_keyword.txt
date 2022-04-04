@@ -12,7 +12,7 @@
 012. Artificial neural network
 013. Bit
 014. Block chain
-015. Bool 대수
+015. Boolean algebra
 016. Byte
 017. CES
 018. Computer vision
