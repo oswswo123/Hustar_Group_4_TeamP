@@ -6,7 +6,7 @@ Mutable
 Call by value
 Immutable
 Parameter
-Devide and conquer
+Divide and conquer
 자료구조
 Compiler
 모듈화

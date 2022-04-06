@@ -7,7 +7,7 @@
 06. Call by value
 07. Immutable
 08. Parameter
-09. Devide and conquer
+09. Divide and conquer
 10. 자료구조
 11. Compiler
 12. 모듈화
