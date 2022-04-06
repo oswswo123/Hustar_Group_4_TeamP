@@ -1,0 +1,15 @@
+# 사용법(in terminal)
+# 입력예시(4월1일 금요일이라면) : python keyword_sorting.py 0401 금
+
+# 필수 file
+# 1. all_remind_keyword.txt (비어있어도 됨)
+# 2. input file 이름 예시 : [0329]today_input.txt
+
+# 날짜만 입력하면 today_output이 생성되고, all_remind_keyword가 update됨
+# today_output 이름 변경 후 all_remind_keyword 점검하기
+
+# 규칙1. 영어 첫자는 대문자. 이후로는 소문자. (단, 약어일 경우 전부 대문자)
+
+!!! 주의 !!!
+- 내 코딩 실력을 믿지 말자
+- 반드시 올리기 전 수동점검 하기

@@ -1,0 +1,26 @@
+	- remind keyword (3.29 화)
+01. ASCII
+02. 컴퓨팅 사고력
+03. Sandwich coding
+04. 미래 자동화
+05. Bit
+06. 자료구조
+07. UNICODE
+08. Algorithm
+09. Byte
+10. Metadata
+11. Metaverse
+12. 추상화
+13. Digital literacy
+14. 16진수
+15. Block chain
+16. 지넷윙
+17. IOT
+18. Deep learning
+19. Alphago
+20. AI
+21. NFT
+22. Siri
+23. GPT-3
+24. 문제해결능력
+25. 2진수
