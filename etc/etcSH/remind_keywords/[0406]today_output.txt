@@ -1,0 +1,26 @@
+	- remind keyword (4.6 수)
+01. Local variable
+02. Global variable
+03. Call by reference
+04. Recursive function
+05. Mutable
+06. Call by value
+07. Immutable
+08. Parameter
+09. Devide and conquer
+10. 자료구조
+11. Compiler
+12. 모듈화
+13. Package
+14. Container
+15. Interpreter
+16. Generative adversarial network
+17. Supervised learning
+18. Perceptron
+19. OS
+20. List comprehension
+21. 하노이 탑 알고리즘
+22. Object oriented
+23. Assignment operator
+24. Linear regression
+25. Reinforcement learning

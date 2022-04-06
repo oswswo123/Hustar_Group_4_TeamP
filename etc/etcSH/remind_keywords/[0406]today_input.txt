@@ -1,0 +1,25 @@
+Local variable
+Global variable
+Call by reference
+Recursive function
+Mutable
+Call by value
+Immutable
+Parameter
+Devide and conquer
+자료구조
+Compiler
+모듈화
+Package
+Container
+Interpreter
+Generative adversarial network
+Supervised learning
+Perceptron
+OS
+List comprehension
+하노이 탑 알고리즘
+Object oriented
+Assignment operator
+Linear regression
+Reinforcement learning
