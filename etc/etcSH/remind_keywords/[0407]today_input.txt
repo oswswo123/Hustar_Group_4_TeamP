@@ -1,0 +1,31 @@
+Object oriented
+Data labeling
+List comprehension
+Linked list
+Array
+Struct
+자료구조
+에이다 러브레이스
+Method
+Pointer
+Call by reference
+Global variable
+Numpy
+Natural language processing
+Stack
+OS
+List
+Class
+Tuple
+자동 형변환
+Queue
+Divide and conquer
+Self in python class
+ADT
+Encapsulation
+Instance
+Inheritance
+Method overriding
+Operator overloading
+Polymorphism
+Constructor
