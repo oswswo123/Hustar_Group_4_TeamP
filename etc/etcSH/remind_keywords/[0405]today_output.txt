@@ -1,0 +1,28 @@
+	- remind keyword (4.5 화)
+01. Lambda 함수
+02. Dynamic typing
+03. Static typing
+04. Supervised learning
+05. AI
+06. Stack
+07. Reinforcement learning
+08. Interpreter
+09. Divide and conquer
+10. 자료구조
+11. Compiler
+12. Mutable
+13. Deep copy
+14. Shallow copy
+15. OS
+16. 모듈화
+17. Middleware
+18. Assignment operator
+19. Heap
+20. 함수
+21. Bubble sort
+22. Object
+23. Algorithm
+24. AIOT
+25. Sorting algorithm
+26. Call by value
+27. Call by reference

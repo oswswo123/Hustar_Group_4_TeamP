@@ -1,0 +1,119 @@
+001. 16진수
+002. 2진수
+003. 4차 산업혁명
+004. ADT
+005. AI
+006. AI hub
+007. AI 국가 전략
+008. AI 맨하튼 프로젝트
+009. AI 코엑스
+010. AIOT
+011. ASCII
+012. Algorithm
+013. Alphago
+014. Array
+015. Artificial neural network
+016. Assignment operator
+017. Bit
+018. Block chain
+019. Boolean algebra
+020. Bubble sort
+021. Byte
+022. CES
+023. Call by reference
+024. Call by value
+025. Class
+026. Compiler
+027. Computer vision
+028. Constructor
+029. Container
+030. Context based learning
+031. Convolution neural network
+032. Data labeling
+033. Deep copy
+034. Deep fake
+035. Deep learning
+036. Deep neural network
+037. Digital literacy
+038. Digital new deal
+039. Digital transformation
+040. Digital twin
+041. Divide and conquer
+042. Dynamic typing
+043. Earth 2
+044. Encapsulation
+045. GPT-3
+046. Generative adversarial network
+047. Global variable
+048. Green new deal
+049. Heap
+050. Hidden layer
+051. IOT
+052. Immutable
+053. Inheritance
+054. Instance
+055. Interpreter
+056. Lambda 함수
+057. Linear regression
+058. Linked list
+059. List
+060. List comprehension
+061. Local variable
+062. Machine learning
+063. Metadata
+064. Metaverse
+065. Method
+066. Method overriding
+067. Middleware
+068. Module
+069. Multi perceptron
+070. Mutable
+071. NFT
+072. Natural language processing
+073. Numpy
+074. OS
+075. Object
+076. Object detection
+077. Object oriented
+078. Operator overloading
+079. Package
+080. Parameter
+081. Perceptron
+082. Pointer
+083. Polymorphism
+084. Queue
+085. Recursive function
+086. Reinforcement learning
+087. Sandwich coding
+088. Self in python class
+089. Shallow copy
+090. Siri
+091. Smart mirror
+092. Sorting algorithm
+093. Stack
+094. Static typing
+095. Struct
+096. Supervised learning
+097. Tuple
+098. UNICODE
+099. Unsupervised learning
+100. Web crawling
+101. 다중 인식
+102. 데이터 댐
+103. 등대 공장
+104. 모듈화
+105. 문제해결능력
+106. 미래 자동화
+107. 앨런튜링
+108. 에이다 러브레이스
+109. 이루다
+110. 자동 형변환
+111. 자료구조
+112. 전처리
+113. 제페토
+114. 지넷윙
+115. 추상화
+116. 컴퓨팅 사고력
+117. 패턴 인식
+118. 하노이 탑 알고리즘
+119. 함수
