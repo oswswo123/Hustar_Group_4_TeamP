@@ -1,98 +1,119 @@
 001. 16진수
 002. 2진수
 003. 4차 산업혁명
-004. AI
-005. AI hub
-006. AI 국가 전략
-007. AI 맨하튼 프로젝트
-008. AI 코엑스
-009. AIOT
-010. ASCII
-011. Algorithm
-012. Alphago
-013. Artificial neural network
-014. Assignment operator
-015. Bit
-016. Block chain
-017. Boolean algebra
-018. Bubble sort
-019. Byte
-020. CES
-021. Call by reference
-022. Call by value
-023. Compiler
-024. Computer vision
-025. Container
-026. Context based learning
-027. Convolution neural network
-028. Data labeling
-029. Deep copy
-030. Deep fake
-031. Deep learning
-032. Deep neural network
-033. Digital literacy
-034. Digital new deal
-035. Digital transformation
-036. Digital twin
-037. Divide and conquer
-038. Dynamic typing
-039. Earth 2
-040. GPT-3
-041. Generative adversarial network
-042. Global variable
-043. Green new deal
-044. Heap
-045. Hidden layer
-046. IOT
-047. Immutable
-048. Interpreter
-049. Lambda 함수
-050. Linear regression
-051. List comprehension
-052. Local variable
-053. Machine learning
-054. Metadata
-055. Metaverse
-056. Middleware
-057. Module
-058. Multi perceptron
-059. Mutable
-060. NFT
-061. Natural language processing
-062. OS
-063. Object
-064. Object detection
-065. Object oriented
-066. Package
-067. Parameter
-068. Perceptron
-069. Recursive function
-070. Reinforcement learning
-071. Sandwich coding
-072. Shallow copy
-073. Siri
-074. Smart mirror
-075. Sorting algorithm
-076. Stack
-077. Static typing
-078. Supervised learning
-079. UNICODE
-080. Unsupervised learning
-081. Web crawling
-082. 다중 인식
-083. 데이터 댐
-084. 등대 공장
-085. 모듈화
-086. 문제해결능력
-087. 미래 자동화
-088. 앨런튜링
-089. 이루다
-090. 자료구조
-091. 전처리
-092. 제페토
-093. 지넷윙
-094. 추상화
-095. 컴퓨팅 사고력
-096. 패턴 인식
-097. 하노이 탑 알고리즘
-098. 함수
+004. ADT
+005. AI
+006. AI hub
+007. AI 국가 전략
+008. AI 맨하튼 프로젝트
+009. AI 코엑스
+010. AIOT
+011. ASCII
+012. Algorithm
+013. Alphago
+014. Array
+015. Artificial neural network
+016. Assignment operator
+017. Bit
+018. Block chain
+019. Boolean algebra
+020. Bubble sort
+021. Byte
+022. CES
+023. Call by reference
+024. Call by value
+025. Class
+026. Compiler
+027. Computer vision
+028. Constructor
+029. Container
+030. Context based learning
+031. Convolution neural network
+032. Data labeling
+033. Deep copy
+034. Deep fake
+035. Deep learning
+036. Deep neural network
+037. Digital literacy
+038. Digital new deal
+039. Digital transformation
+040. Digital twin
+041. Divide and conquer
+042. Dynamic typing
+043. Earth 2
+044. Encapsulation
+045. GPT-3
+046. Generative adversarial network
+047. Global variable
+048. Green new deal
+049. Heap
+050. Hidden layer
+051. IOT
+052. Immutable
+053. Inheritance
+054. Instance
+055. Interpreter
+056. Lambda 함수
+057. Linear regression
+058. Linked list
+059. List
+060. List comprehension
+061. Local variable
+062. Machine learning
+063. Metadata
+064. Metaverse
+065. Method
+066. Method overriding
+067. Middleware
+068. Module
+069. Multi perceptron
+070. Mutable
+071. NFT
+072. Natural language processing
+073. Numpy
+074. OS
+075. Object
+076. Object detection
+077. Object oriented
+078. Operator overloading
+079. Package
+080. Parameter
+081. Perceptron
+082. Pointer
+083. Polymorphism
+084. Queue
+085. Recursive function
+086. Reinforcement learning
+087. Sandwich coding
+088. Self in python class
+089. Shallow copy
+090. Siri
+091. Smart mirror
+092. Sorting algorithm
+093. Stack
+094. Static typing
+095. Struct
+096. Supervised learning
+097. Tuple
+098. UNICODE
+099. Unsupervised learning
+100. Web crawling
+101. 다중 인식
+102. 데이터 댐
+103. 등대 공장
+104. 모듈화
+105. 문제해결능력
+106. 미래 자동화
+107. 앨런튜링
+108. 에이다 러브레이스
+109. 이루다
+110. 자동 형변환
+111. 자료구조
+112. 전처리
+113. 제페토
+114. 지넷윙
+115. 추상화
+116. 컴퓨팅 사고력
+117. 패턴 인식
+118. 하노이 탑 알고리즘
+119. 함수
