@@ -1,6 +1,6 @@
 CC = g++
 PROJECT = output
-SRC = Homework2-2,3.cpp
+SRC = Homework3-4.cpp
 LIBS = `pkg-config --cflags --libs opencv`
 $(PROJECT) : $(SRC)
 	$(CC) $(SRC) -o $(PROJECT) $(LIBS)
