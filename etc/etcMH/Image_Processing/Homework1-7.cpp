@@ -15,7 +15,7 @@ Scalar red(0,0,255), blue(255,0,0), white(255,255,255), black(0,0,0);    //색�
 int main()
 {
     // 비디오 캡쳐 및 수정
-    capture.open(0);
+    capture.open("cat.mp4");
     CV_Assert(capture.isOpened());
 
     capture.set(CAP_PROP_FRAME_WIDTH, 400);
