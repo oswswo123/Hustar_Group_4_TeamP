@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.0)
+project(RoadLaneDetector)
+set(CMAKE_CXX_COMPILER g++)
+set(SOURCES RoadLaneDetector.cpp)
+add_executable(${PROJECT_NAME} ${SOURCES})
