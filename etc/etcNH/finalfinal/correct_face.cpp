@@ -5,7 +5,7 @@
 #include <opencv2/imgproc/types_c.h>
 #include <cstdlib>
 RNG rng(12345);
-string name = "mÁ¤¿ì¼º";
+string name = "m";
 
 int main()
 {
@@ -19,7 +19,7 @@ int main()
 
 	vector<Rect> faces, eyes;
 	vector<Point2d> eyes_center;
-	vector<Rect> sub_obj;
+	vector<Rect> sub_obj, sub_obj2;
 
 	face_cascade.detectMultiScale(gray, faces, 1.1, 2, 0, Size(100, 100));
 
@@ -57,17 +57,53 @@ int main()
 
 				}
 				
-				double tmp = (count < 200) ? 0.1 : 0.7;
-				int value = (criteria2 > tmp) ? 0 : 1;
+				cv::Mat img1, img2, mustache, cmustache, dstimage2;
+				sub_obj2.push_back(detect_bread(face_center, faces[0]));
+				sub_obj2.push_back(detect_mustache(face_center, faces[0]));
+				sub_obj2.push_back(detect_cheek(face_center, faces[0]));
+				sub_obj2.push_back(detect_forehead(face_center, faces[0]));
+				
+				correct_img(sub_obj2[0]).copyTo(img1);
+				correct_img(sub_obj2[1]).copyTo(img2);
+
+				cv::cvtColor(img1, img1, cv::COLOR_BGR2GRAY);
+				cv::cvtColor(img2, img2, cv::COLOR_BGR2GRAY);
+
+				cv::threshold(img1, img1, 125, 255, cv::THRESH_BINARY);
+				cv::threshold(img2, img2, 125, 255, cv::THRESH_BINARY);
+
+				cv::resize(img2, img2, img1.size());
+				cv::vconcat(img1, img2, mustache);
+
+				cv::imshow("dd", mustache);
+
+				std::vector<std::vector<cv::Point>> contours2;
+				std::vector<cv::Vec4i> hierarchy2;
+
+				findContours(mustache, contours2, hierarchy2, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
+
+				double count2 = 0;
+				for (int i = 0; i < contours2.size(); i++)
+				{
+					count2 += 1;
+					cv::Scalar color = cv::Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
+					drawContours(dstimage2, contours2, i, color, 2, 8, hierarchy2, 0, cv::Point());
+
+				}
+				/*
+				double tmp = (count2 < 10 ) ? 200 : 0.7;
+				int value = (count > tmp) ? 0 : 1;
 				string text = (value) ? "MAN" : "WOMAN";
 				text = format("%s.jpg: ", name) + text;
 				int font = FONT_HERSHEY_TRIPLEX;
 				putText(image, text, Point(12, 31), font, 0.7, Scalar(0, 0, 0), 2);
 				putText(image, text, Point(10, 30), font, 0.7, Scalar(0, 255, 0), 1);
-				cout << text << format(" - À¯»çµµ [´«½ç: %4.2f, ÀÔ¼ú: %4.2f]\n", count, criteria2);
+				cout << text << format(" - À¯»çµµ [´«½ç: %4.2f, ¼ö¿°: %4.2f]\n", count, count2);
 				imshow("correct_img", correct_img);
 				waitKey();
 				break;
+				*/
+				
 			}
 			i += 0.05;
 			if (i > 10) break;
