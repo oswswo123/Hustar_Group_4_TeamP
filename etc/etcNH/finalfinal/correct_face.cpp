@@ -34,9 +34,9 @@ int main()
 				eyes_center.push_back(calc_center(eyes[0] + faces[0].tl()));
 				eyes_center.push_back(calc_center(eyes[1] + faces[0].tl()));
 
-				Point2d face_center = calc_center(faces[0]); // ¾ó±¼ Áß½É ÁÂÇ¥ °è»ê
-				Mat rot_mat = calc_rotMap(face_center, eyes_center); // ¾ó±¼ Áß½ÉÁÂÇ¥¿Í ´« Áß½ÉÁÂÇ¥·Î ¾ó±¼ ±â¿ï±âÀÇ È¸ÀüÇà·Ä ¹ÝÈ¯
-				Mat correct_img = correct_image(image, rot_mat, eyes_center); // È¸ÀüÇà·Ä·Î È¸Àüº¯È¯À» ¼öÇàÇÏ¿© ±â¿ï±â¸¦ º¸Á¤ÇÏ°í, ´« ÁÂÇ¥µµ È¸Àüº¯È¯À» Àû¿ëÇÏ¿© ´Ù½Ã °è»ê
+				Point2d face_center = calc_center(faces[0]); // ï¿½ï¿½ ï¿½ß½ï¿½ ï¿½ï¿½Ç¥ ï¿½ï¿½ï¿½
+				Mat rot_mat = calc_rotMap(face_center, eyes_center); // ï¿½ï¿½ ï¿½ß½ï¿½ï¿½ï¿½Ç¥ï¿½ï¿½ ï¿½ï¿½ ï¿½ß½ï¿½ï¿½ï¿½Ç¥ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
+				Mat correct_img = correct_image(image, rot_mat, eyes_center); // È¸ï¿½ï¿½ï¿½ï¿½Ä·ï¿½ È¸ï¿½ï¿½ï¿½ï¿½È¯ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½â¸¦ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½, ï¿½ï¿½ ï¿½ï¿½Ç¥ï¿½ï¿½ È¸ï¿½ï¿½ï¿½ï¿½È¯ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½
 
 				sub_obj.push_back(detect_brow(eyes_center[0], eyes_center[1], faces[0]));
 
@@ -98,12 +98,36 @@ int main()
 				int font = FONT_HERSHEY_TRIPLEX;
 				putText(image, text, Point(12, 31), font, 0.7, Scalar(0, 0, 0), 2);
 				putText(image, text, Point(10, 30), font, 0.7, Scalar(0, 255, 0), 1);
-				cout << text << format(" - À¯»çµµ [´«½ç: %4.2f, ¼ö¿°: %4.2f]\n", count, count2);
+				cout << text << format(" - ï¿½ï¿½ï¿½çµµ [ï¿½ï¿½ï¿½ï¿½: %4.2f, ï¿½ï¿½ï¿½ï¿½: %4.2f]\n", count, count2);
 				imshow("correct_img", correct_img);
 				waitKey();
 				break;
 				*/
-				
+
+				string text = "None";
+
+				if (count2 > 10)
+				{
+					text = "MAN";
+				}
+				else
+				{
+					if (count > 200)
+					{
+						text = "MAN";
+					}
+					else
+					{
+						text = "WOMAN";
+					}
+				}
+				text = format("%s.jpg: ", name) + text;
+				int font = FONT_HERSHEY_TRIPLEX;
+				putText(image, text, Point(12, 31), font, 0.7, Scalar(0, 0, 0), 2);
+				putText(image, text, Point(10, 30), font, 0.7, Scalar(0, 255, 0), 1);
+				cout << text << format(" - ï¿½ï¿½ï¿½çµµ [ï¿½ï¿½ï¿½ï¿½: %4.2f, ï¿½ï¿½ï¿½ï¿½: %4.2f]\n", count, count2);
+				imshow("correct_img", correct_img);
+				waitKey();
 			}
 			i += 0.05;
 			if (i > 10) break;
