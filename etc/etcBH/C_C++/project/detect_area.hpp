@@ -22,6 +22,39 @@ cv::Rect detect_forehead(cv::Point2d face_center, cv::Rect face)
     return cv::Rect(forehead_start, forehead_end);
 }
 
+cv::Rect detect_mustache(cv::Point2d face_center, cv::Rect face)
+{
+	cv::Point2d lip_center = face_center + cv::Point2d(face.width * 0.01, face.height * 0.23);
+	cv::Point2d gap_size(face.width * 0.2, face.height * 0.03);
+
+	cv::Point lip_start = lip_center - gap_size;
+	cv::Point lip_end = lip_center + gap_size;
+
+	return cv::Rect(lip_start, lip_end);
+}
+
+cv::Rect detect_bread(cv::Point2d face_center, cv::Rect face) // 아랫수염
+{
+    cv::Point2d lip_center = face_center + cv::Point2d(0, face.height * 0.46);
+    cv::Point2d gap_size(face.width * 0.1, face.height * 0.03);
+    
+    cv::Point lip_start = lip_center - gap_size;
+	cv::Point lip_end = lip_center + gap_size;
+
+	return cv::Rect(lip_start, lip_end);
+}
+
+cv::Rect detect_cheek(cv::Point2d face_center, cv::Rect face) // 볼
+{
+	cv::Point2d lip_center = face_center + cv::Point2d(face.width * 0.2, face.height * 0.1);
+	cv::Point2d gap_size(face.width * 0.07, face.height * 0.07);
+
+	cv::Point lip_start = lip_center - gap_size;
+	cv::Point lip_end = lip_center + gap_size;
+
+	return cv::Rect(lip_start, lip_end);
+}
+
 cv::Rect detect_brow(cv::Point2d eye_center1, cv::Point2d eye_center2, cv::Rect face)
 {
     cv::Point2d brow_center = (eye_center1+eye_center2)*0.5 - cv::Point2d(0, face.height*0.1);
