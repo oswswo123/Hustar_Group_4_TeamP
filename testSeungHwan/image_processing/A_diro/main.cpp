@@ -1,131 +1,133 @@
-#include <opencv2/highgui/highgui.hpp>
-#include <iostream>
-#include <string>
-#include <vector>
-#include "opencv2/opencv.hpp"
-#include "RoadLaneDetector.h"
+#include <opencv2/opencv.hpp>
+#include "image_filter.h"
+#include "set_roi.h"
+#include "hough_cal.h"
+#include "hough_regression.h"
 
-int main()
-{
-	RoadLaneDetector roadLaneDetector;
-	Mat img_frame, img_filter, img_edges, img_mask, img_lines, img_result;
-	vector<Vec4i> lines;
-	vector<vector<Vec4i> > separated_lines;
-	vector<Point> lane;
-	string dir;
+int main() {
+	// 이미지 실행
+	//Mat image = imread("./road1.jpg", 1);
+	//imshow("원본", image);
 
-	VideoCapture video("input.mp4");  //영상 불러오기
+	// 동영상 실행(while 실행)
+	cv::Mat image;
+	cv::VideoCapture cap("./input.mp4");
+	cap.read(image);
 
-	Mat image = imread("./road1.jpg", 1);
-	imshow("원본", image);
-
-	//2. 흰색, 노란색 범위 내에 있는 것만 필터링하여 차선 후보로 저장한다.
-	img_filter = roadLaneDetector.filter_colors(image);
-	imshow("img_filter", img_filter);
-
-	//3. 영상을 GrayScale 으로 변환한다.
-	cvtColor(img_filter, img_filter, COLOR_BGR2GRAY);
-	imshow("grayscale", img_filter);
-
-	//4. Canny Edge Detection으로 에지를 추출. (잡음 제거를 위한 Gaussian 필터링도 포함)
-	Canny(img_filter, img_edges, 50, 150);
-	imshow("Canny", img_edges);
-
-	//5. 자동차의 진행방향 바닥에 존재하는 차선만을 검출하기 위한 관심 영역을 지정
-	img_mask = roadLaneDetector.limit_region(img_edges);
-	imshow("img_mask", img_mask);
-
-	//6. Hough 변환으로 에지에서의 직선 성분을 추출
-	lines = roadLaneDetector.houghLines(img_mask);
+	//VideoWriter cap_writer, cap_writer_hough;
+	int codec = cv::VideoWriter::fourcc('X', 'V', 'I', 'D');
+	double fps = 20.0;
+	//cap_writer.open("./output.avi", codec, fps, image.size(), CV_8UC3);
+	//cap_writer_hough.open("./output_hough.avi", codec, fps, image.size(), CV_8UC3);
 
 	
-	//7. 추출한 직선성분으로 좌우 차선에 있을 가능성이 있는 직선들만 따로 뽑아서 좌우 각각 직선을 계산한다. 
-	// 선형 회귀를 하여 가장 적합한 선을 찾는다.
-	separated_lines = roadLaneDetector.separateLine(img_mask, lines);
-	lane = roadLaneDetector.regression(separated_lines, image);
+	while (true) {
+		cap >> image;
 
-	//8. 진행 방향 예측
-	dir = roadLaneDetector.predictDir();
+		// 색상 필터 영역
+		cv::Mat img_filter;
+		img_filter = color_filter(image, false);
 
-	//9. 영상에 최종 차선을 선으로 그리고 내부 다각형을 색으로 채운다. 예측 진행 방향 텍스트를 영상에 출력
-	img_result = roadLaneDetector.drawLine(image, lane, dir);
+		// Gray Scale
+		cv::cvtColor(img_filter, img_filter, cv::COLOR_BGR2GRAY);
+		//imshow("grayscale", img_filter);
 
+		// Canny Edge 검출
+		cv::Mat img_edges;
+		cv::Canny(img_filter, img_edges, 50, 150);
+		//imshow("Canny", img_edges);
 
-	//11. 결과 영상 출력
-	imshow("result", img_result);
+		// !! ROI 지정 영역 !!
+		cv::Mat img_roi;
+		img_roi = setting_roi(img_edges);
 
-	/*
-	if (!video.isOpened())
-	{
-		cout << "동영상 파일을 열 수 없습니다. \n" << endl;
-		getchar();
-		return -1;
+		// !! 허프 연산 영역 !!
+		std::vector<cv::Vec4i> lines;
+		lines = hough_transform(img_roi, 30, 20, 10, false);
+
+		// !! Linear Regression 영역 !!
+		std::vector<cv::Point> detection_lanepoint(4);
+		detection_lanepoint = regression_and_detection_points(img_roi, lines, 0.8);
+
+		// !! birds_eye view 영역 !!
+		cv::Point2f source_vertices[4];
+		cv::Point2f changed_vertices[4];
+		int width, height;
+		width = image.cols;
+		height = image.rows;
+
+		source_vertices[0] = cv::Point2f((width * 0.4), height - height * 0.4);
+		source_vertices[1] = cv::Point2f(width - (width * 0.4), height - height * 0.4);
+		source_vertices[2] = cv::Point2f(width - (width * 0.05), height - height * 0.05);
+		source_vertices[3] = cv::Point2f((width * 0.05), height - height * 0.05);
+
+		changed_vertices[0] = cv::Point(0, 0);			// left high
+		changed_vertices[1] = cv::Point(width, 0);		// right high
+		changed_vertices[2] = cv::Point(width, height);	// right low
+		changed_vertices[3] = cv::Point(0, height);		// left low
+
+		cv::Mat M = cv::getPerspectiveTransform(source_vertices, changed_vertices);
+		cv::Mat dst(height, width, CV_8UC3);
+		cv::warpPerspective(image, dst, M, dst.size(), cv::INTER_LINEAR, cv::BORDER_CONSTANT);
+		//cv::imshow("dst", dst);
+
+		cv::Mat dst_filter;
+		dst_filter = color_filter(dst, false);
+
+		cv::cvtColor(dst_filter, dst_filter, cv::COLOR_BGR2GRAY);
+		//imshow("grayscale", img_filter);
+
+		cv::Mat dst_edges;
+		cv::Canny(dst_filter, dst_edges, 50, 150);
+		//cv::imshow("dst_canny", dst_filter);
+
+		std::vector<cv::Vec4i> dst_lines;
+		dst_lines = hough_transform(dst_edges, 30, 20, 5, false);
+
+		std::vector<cv::Point> dst_lanepoint(4);
+		dst_lanepoint = regression_and_detection_points(dst_edges, dst_lines, 1.5);
+
+		std::vector<cv::Point> dstdraw_points;
+		cv::Mat dst_draw;
+		dst.copyTo(dst_draw);
+
+		dstdraw_points.push_back(dst_lanepoint[0]);	// left low
+		dstdraw_points.push_back(dst_lanepoint[1]);	// left high
+		dstdraw_points.push_back(dst_lanepoint[3]);	// right high
+		dstdraw_points.push_back(dst_lanepoint[2]);	// right low
+		
+		cv::fillConvexPoly(dst_draw, dstdraw_points, cv::Scalar(120, 120, 0), cv::LINE_AA, 0);
+		cv::addWeighted(dst_draw, 0.3, dst, 0.7, 0, dst);
+
+		cv::line(dst, dst_lanepoint[0], dst_lanepoint[1], cv::Scalar(230, 0, 0), 3, cv::LINE_AA);
+		cv::line(dst, dst_lanepoint[2], dst_lanepoint[3], cv::Scalar(230, 0, 0), 3, cv::LINE_AA);
+
+		cv::imshow("bird view after", dst);
+		// !! birds_eye view 영역 !!
+
+		// !! line draw 영역 !!
+		// 차선 사이 색칠
+		std::vector<cv::Point> draw_points;
+		cv::Mat img_draw;
+		image.copyTo(img_draw);
+
+		draw_points.push_back(detection_lanepoint[0]);	// left low
+		draw_points.push_back(detection_lanepoint[1]);	// left high
+		draw_points.push_back(detection_lanepoint[3]);	// right high
+		draw_points.push_back(detection_lanepoint[2]);	// right low
+
+		cv::fillConvexPoly(img_draw, draw_points, cv::Scalar(0, 230, 0), cv::LINE_AA, 0);
+		cv::addWeighted(img_draw, 0.3, image, 0.7, 0, image);
+		// 차선 그리기
+		cv::line(image, detection_lanepoint[0], detection_lanepoint[1], cv::Scalar(0, 255, 0), 3, cv::LINE_AA);
+		cv::line(image, detection_lanepoint[2], detection_lanepoint[3], cv::Scalar(0, 255, 0), 3, cv::LINE_AA);
+		// !! line draw 영역 !!
+
+		//cap_writer << image;
+
+		cv::imshow("처리 후 결과", image);
+		if (cv::waitKey(10) == 27) break;
 	}
-
-	video.read(img_frame);
-	if (img_frame.empty()) return -1;
-
-	VideoWriter writer;
-	int codec = VideoWriter::fourcc('X', 'V', 'I', 'D');  //원하는 코덱 선택
-	double fps = 25.0;  //프레임
-	string filename = "./result.avi";  //결과 파일
-
-	writer.open(filename, codec, fps, img_frame.size(), CV_8UC3);
-	if (!writer.isOpened()) {
-		cout << "출력을 위한 비디오 파일을 열 수 없습니다. \n";
-		return -1;
-	}
-
-	video.read(img_frame);
-	int cnt = 0;
-
-	while (1) {
-		//1. 원본 영상을 읽어온다.
-		if (!video.read(img_frame)) break;
-
-		//2. 흰색, 노란색 범위 내에 있는 것만 필터링하여 차선 후보로 저장한다.
-		img_filter = roadLaneDetector.filter_colors(img_frame);
-
-		//3. 영상을 GrayScale 으로 변환한다.
-		cvtColor(img_filter, img_filter, COLOR_BGR2GRAY);
-
-		//4. Canny Edge Detection으로 에지를 추출. (잡음 제거를 위한 Gaussian 필터링도 포함)
-		Canny(img_filter, img_edges, 50, 150);
-
-		//5. 자동차의 진행방향 바닥에 존재하는 차선만을 검출하기 위한 관심 영역을 지정
-		img_mask = roadLaneDetector.limit_region(img_edges);
-
-		//6. Hough 변환으로 에지에서의 직선 성분을 추출
-		lines = roadLaneDetector.houghLines(img_mask);
-
-		if (lines.size() > 0) {
-			//7. 추출한 직선성분으로 좌우 차선에 있을 가능성이 있는 직선들만 따로 뽑아서 좌우 각각 직선을 계산한다. 
-			// 선형 회귀를 하여 가장 적합한 선을 찾는다.
-			separated_lines = roadLaneDetector.separateLine(img_mask, lines);
-			lane = roadLaneDetector.regression(separated_lines, img_frame);
-
-			//8. 진행 방향 예측
-			dir = roadLaneDetector.predictDir();
-
-			//9. 영상에 최종 차선을 선으로 그리고 내부 다각형을 색으로 채운다. 예측 진행 방향 텍스트를 영상에 출력
-			img_result = roadLaneDetector.drawLine(img_frame, lane, dir);
-		}
-
-		//10. 결과를 동영상 파일로 저장. 캡쳐하여 사진 저장
-		writer << img_result;
-		if (cnt++ == 15)
-			imwrite("img_result.jpg", img_result);  //캡쳐하여 사진 저장
-
-		//11. 결과 영상 출력
-		imshow("result", img_result);
-
-		//esc 키 종료
-		if (waitKey(1) == 27)
-			break;
-	}
-
-	*/
-
-	waitKey(0);
+	//cv::waitKey(0);
 	return 0;
 }
