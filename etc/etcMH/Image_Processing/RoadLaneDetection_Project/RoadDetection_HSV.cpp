@@ -221,7 +221,7 @@ int main()
     vector<cv::Point> lane;
     string dir;
 
-    cv::VideoCapture video("drive.mp4");
+    cv::VideoCapture video("project_test.mp4");
     if(!video.isOpened()){
         cout << "ERROR!!: can not OPEN video..." << endl;
         return -1;
@@ -268,7 +268,7 @@ int main()
         // cv::imshow("img_filter", img_filter);
         
 
-        if (cv::waitKey(10) == 27) { break; }
+        if (cv::waitKey(30) == 27) { break; }
     }
     video.release();
     return 0;
