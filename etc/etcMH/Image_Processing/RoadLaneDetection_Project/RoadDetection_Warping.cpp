@@ -1,5 +1,6 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc.hpp>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -15,20 +16,44 @@ private:
         bool left_detect = false, right_detect = false;
 
         //사다리꼴 관심 영역 범위 계산을 위한 백분율
-        double trap_bottom_width = 0.125;
-        double trap_top_width = 0.45;
-        double trap_height = 0.5;
+        double trap_bottom_width = 0.1;
+        double trap_top_width = 0.4;
+        double trap_height = 0.55;
+
 public:
+        void transform(cv::Mat& src, cv::Mat& dst)
+        {
+            int width = src.cols;
+            int height = src.rows;
+
+            cv::Point2f src_vertices[4];
+            src_vertices[0] = cv::Point((width * trap_bottom_width), height - 30);
+            src_vertices[1] = cv::Point((width * trap_top_width), height * 0.6);
+            src_vertices[2] = cv::Point(width - (width * trap_top_width), height * 0.6);
+            src_vertices[3] = cv::Point(width - (width * trap_bottom_width), height - 30);
+
+            cv::Point2f dst_vertices[4];
+            dst_vertices[0] = cv::Point(0, height);
+            dst_vertices[1] = cv::Point(0, 0);
+            dst_vertices[2] = cv::Point(width, 0);
+            dst_vertices[3] = cv::Point(width, height);
+            
+            // 두 이미지간 관계 계산 후 warping
+            cv::Mat M = cv::getPerspectiveTransform(src_vertices, dst_vertices);
+            cv::warpPerspective(src, dst, M, dst.size(), cv::INTER_LINEAR, cv::BORDER_CONSTANT);
+
+            cv::imshow("Result of Warping", dst);
+        }
+
         cv::Mat filtering(cv::Mat img)
         {
             cv::Mat res, myROI;
             cv::UMat img_hsv;
             cv::UMat white_mask, white_image, yellow_mask, yellow_image;
             int threshHold = 128;
-
             img.copyTo(res);
             
-            cv::Scalar lower_white = cv::Scalar(160,160,160);   //흰 차선
+            cv::Scalar lower_white = cv::Scalar(180,180,180);   //흰 차선
             cv::Scalar upper_white = cv::Scalar(255,255,255);
             cv::Scalar lower_yellow = cv::Scalar(10,100,100);   //노란 차선
             cv::Scalar upper_yellow = cv::Scalar(40,255,255);
@@ -60,10 +85,10 @@ public:
 
             //관심 영역 정점 계산
             cv::Point points[4]{
-                cv::Point((width * trap_bottom_width), height),
+                cv::Point((width * trap_bottom_width), height - 30),
                 cv::Point((width * trap_top_width), height * trap_height),
                 cv::Point(width - (width * trap_top_width), height * trap_height),
-                cv::Point(width - (width * trap_bottom_width), height)};
+                cv::Point(width - (width * trap_bottom_width), height - 30)};
 
             cv::fillConvexPoly(mask, points, 4, cv::Scalar(255, 0, 0));
             cv::imshow("ROI", mask);
@@ -81,7 +106,6 @@ public:
             //          minLineLength: 직선의 최소 길이 (픽셀 단위)
             //          maxLineGap: 점들 사이 최대 거리 (이값보다 크면 다른 선으로 간주)
             cv::HoughLinesP(img_mask, line, 1, CV_PI/180, 20,10,5);
-            // cv::HoughLines(img_mask, line, 1, CV_PI/180, 100);
             return line;
         }
 
@@ -174,7 +198,7 @@ public:
 
             // 각각의 두점 계산
             int y1 = img_input.rows;
-            int y2 = img_input.rows / 1.5;
+            int y2 = 0;
 
             double right_x1 = ((y1 - right_b.y) / right_m ) + right_b.x;
             double right_x2 = ((y2 - right_b.y) / right_m ) + right_b.x;
@@ -211,66 +235,3 @@ public:
         }
         
 };
-
-int main()
-{
-    RoadDetector RLD;
-    cv::Mat frame, img_filter, img_edges, img_mask, img_lines, img_result;
-    vector<cv::Vec4i> lines;
-    vector<vector<cv::Vec4i>> separated_lines;
-    vector<cv::Point> lane;
-    string dir;
-
-    cv::VideoCapture video("project_test.mp4");
-    if(!video.isOpened()){
-        cout << "ERROR!!: can not OPEN video..." << endl;
-        return -1;
-    }
-
-    // cv::Mat image = cv::imread("road.jpeg", cv::IMREAD_COLOR);
-    // CV_Assert(image.data);
-    // cv::resize(image, image, cv::Size(480, 360));
-    // cv::imshow("Original image", image);
-
-    while (1)
-    {
-        video >> frame;
-        if (frame.empty()){
-        cout << "ERROR!!: can not READ video..." << endl;
-        return -1;
-        }
-
-        resize(frame, frame, cv::Size(480, 360));
-        cv::imshow("Original Frame", frame);
-
-        // 흰색, 노란색 차선만 필터링
-        img_filter = RLD.filtering(frame);
-        cv::imshow("After filtering to HSV, GrayScale", img_filter);
-        // GrayScale 변환
-        // cv::cvtColor(img_filter, img_filter, cv::COLOR_BGR2GRAY);
-        // cv::imshow("After filtering to GrayScale", img_filter);
-        // Canny Edge Detection으로 에지 추출
-        cv::Canny(img_filter, img_edges, 50, 150);
-        cv::imshow("After Canny Edge Detection", img_edges);
-        // 바닥의 차선 검출을 위한 관심 영역
-        img_mask = RLD.limit_region(img_edges);
-        cv::imshow("After ROI processing", img_mask);
-        // Hough 변환, 직선 성분 추출 (vector는 imshow가 안됨)
-        lines = RLD.houghLines(img_mask);
-        
-
-        if (lines.size() > 0){
-            separated_lines = RLD.separateLine(img_mask, lines);
-            lane = RLD.regression(separated_lines, frame);
-            img_result = RLD.drawLine(frame, lane);
-            cv::imshow("After Drawing Line", img_result);
-        }
-        // cv::imshow("img_filter", img_filter);
-        
-
-        if (cv::waitKey(30) == 27) { break; }
-    }
-    video.release();
-    return 0;
-
-}

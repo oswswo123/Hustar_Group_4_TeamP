@@ -33,10 +33,10 @@ public:
             int height = img_edges.rows;
 
             //사다리꼴 관심 영역 범위 계산을 위한 백분율
-            double p11_width = 0.0, p21_width = 0.6;
-            double p12_width = 0.33, p22_width = 0.5;
-            double p13_width = 0.5, p23_width = 0.7;
-            double p14_width = 0.4, p24_width = 1.0;
+            double p11_width = 0.15, p21_width = 0.6;
+            double p12_width = 0.4, p22_width = 0.5;
+            double p13_width = 0.5, p23_width = 0.6;
+            double p14_width = 0.4, p24_width = 0.85;
             double trap_height = 0.6;
 
             cv::Mat output;
@@ -44,7 +44,7 @@ public:
 
             //관심 영역 정점 계산
             cv::Point points1[4]{
-                cv::Point(0, height),
+                cv::Point(width * p11_width, height),
                 cv::Point(width * p12_width, height * trap_height),
                 cv::Point(width * p13_width, height * trap_height),
                 cv::Point(width * p14_width, height)};
@@ -53,7 +53,7 @@ public:
                 cv::Point(width * p21_width, height),
                 cv::Point(width * p22_width, height * trap_height),
                 cv::Point(width * p23_width, height * trap_height),
-                cv::Point(width, height)};
+                cv::Point(width * p24_width, height)};
 
             // cv::Point points[4]{
             //     cv::Point((width * (1 - trap_bottom_width)) / 2, height),
@@ -65,6 +65,7 @@ public:
             cv::fillConvexPoly(mask, points1, 4, cv::Scalar(255, 0, 0));
             cv::fillConvexPoly(mask, points2, 4, cv::Scalar(255, 0, 0));
 
+            cv::imshow("ROI", mask);
             cv::bitwise_and(img_edges, mask, output);
 
             return output;
@@ -222,7 +223,7 @@ int main()
 
     vector<cv::Vec2f> hough_lines;
 
-    cv::VideoCapture video("drive2.mp4");
+    cv::VideoCapture video("project_test.mp4");
     if(!video.isOpened()){
         cout << "ERROR!!: can not OPEN video..." << endl;
         return -1;
@@ -267,7 +268,7 @@ int main()
         // cv::imshow("img_filter", img_filter);
         
 
-        if (cv::waitKey(10) == 27) { break; }
+        if (cv::waitKey(30) == 27) { break; }
     }
     video.release();
     return 0;

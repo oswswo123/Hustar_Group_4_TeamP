@@ -1,76 +1,58 @@
 #include <opencv2/opencv.hpp>
-#include "RoadLaneDetection.hpp"
-#include "RoadLaneDetection.cpp"
+#include <opencv2/highgui/highgui.hpp>
+#include <iostream>
+#include <string>
+#include <vector>
+#include "RoadDetection_Warping.cpp"
 
-int main() {
-	// �̹��� ����
-	//Mat image = imread("./road1.jpg", 1);
-	//imshow("����", image);
+using namespace std;
 
-	// ������ ����(while ����)
-	cv::Mat image;
-	cv::VideoCapture cap("drive2.mp4");
-	cap.read(image);
+int main()
+{
+    RoadDetector RLD;
+    cv::Mat frame, img_warp, img_filter, img_edges, img_mask, img_lines, img_result;
+    vector<cv::Vec4i> lines, lines2;
+    vector<vector<cv::Vec4i>> separated_lines, separated_lines2;
+    vector<cv::Point> lane, lane2;
+    string dir;
 
-	//VideoWriter cap_writer, cap_writer_hough;
-	int codec = cv::VideoWriter::fourcc('X', 'V', 'I', 'D');
-	double fps = 20.0;
-	//cap_writer.open("./output.avi", codec, fps, image.size(), CV_8UC3);
-	//cap_writer_hough.open("./output_hough.avi", codec, fps, image.size(), CV_8UC3);
+    cv::VideoCapture video("project_test.mp4");
+    if(!video.isOpened()){
+        cout << "ERROR!!: can not OPEN video..." << endl;
+        return -1;
+    }
 
-	
-	while (true) {
-		cap >> image;
+    while (1)
+    {
+        video >> frame;
+        if (frame.empty()){
+        cout << "ERROR!!: can not READ video..." << endl;
+        return -1;
+        }
 
-		// ���� ���� ����
-		cv::Mat img_filter;
-		img_filter = color_filter(image, false);
-		cv::imshow("filtering", img_filter);
+        resize(frame, frame, cv::Size(480, 360));
+        cv::imshow("Original Frame", frame);
 
-		// Gray Scale
-		cv::cvtColor(img_filter, img_filter, cv::COLOR_BGR2GRAY);
-		//imshow("grayscale", img_filter);
+        RLD.transform(frame, img_warp);
+        //////////////////////////////////////////////////////////
+        img_filter = RLD.filtering(img_warp);
+        cv::imshow("After filtering to HSV, GrayScale", img_filter);
+        // Canny Edge Detection으로 에지 추출
+        cv::Canny(img_filter, img_edges, 50, 150);
+        cv::imshow("After Canny Edge Detection", img_edges);
+        // Hough 변환, 직선 성분 추출 (vector는 imshow가 안됨)
+        lines = RLD.houghLines(img_edges);
 
-		// Canny Edge ����
-		cv::Mat img_edges;
-		cv::Canny(img_filter, img_edges, 50, 150);
-		//imshow("Canny", img_edges);
+        if (lines.size() > 0){
+            separated_lines = RLD.separateLine(img_edges, lines);
+            lane = RLD.regression(separated_lines, frame);
+            img_result = RLD.drawLine(img_warp, lane);
+            cv::imshow("After Drawing Line", img_result);
+        }
+        
+        if (cv::waitKey(30) == 27) { break; }
+    }
+    video.release();
+    return 0;
 
-		// !! ROI ���� ���� !!
-		cv::Mat img_roi;
-		img_roi = setting_roi(img_edges);
-
-		// !! ���� ���� ���� !!
-		std::vector<cv::Vec4i> lines;
-		lines = hough_transform(img_roi, 30, 20, 10, false);
-
-		// !! Linear Regression ���� !!
-		std::vector<cv::Point> detection_lanepoint(4);
-		detection_lanepoint = regression_and_detection_points(img_roi, lines);
-
-		// !! line draw ���� !!
-		// ���� ���� ��ĥ
-		std::vector<cv::Point> draw_points;
-		cv::Mat img_draw;
-		image.copyTo(img_draw);
-
-		draw_points.push_back(detection_lanepoint[0]);
-		draw_points.push_back(detection_lanepoint[1]);
-		draw_points.push_back(detection_lanepoint[3]);
-		draw_points.push_back(detection_lanepoint[2]);
-
-		cv::fillConvexPoly(img_draw, draw_points, cv::Scalar(0, 230, 0), cv::LINE_AA, 0);
-		cv::addWeighted(img_draw, 0.3, image, 0.7, 0, image);
-		// ���� �׸���
-		cv::line(image, detection_lanepoint[0], detection_lanepoint[1], cv::Scalar(0, 255, 0), 3, cv::LINE_AA);
-		cv::line(image, detection_lanepoint[2], detection_lanepoint[3], cv::Scalar(0, 255, 0), 3, cv::LINE_AA);
-		// !! line draw ���� !!
-
-		//cap_writer << image;
-
-		cv::imshow("Final image", image);
-		if (cv::waitKey(10) == 27) break;
-	}
-	//cv::waitKey(0);
-	return 0;
 }

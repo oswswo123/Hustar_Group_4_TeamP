@@ -1,6 +1,6 @@
 CC = g++
-PROJECT = output
-SRC = RoadDetection_HSV.cpp
+PROJECT = output_Binary
+SRC = RoadDetection_Binary.cpp
 LIBS = `pkg-config --cflags --libs opencv`
 $(PROJECT) : $(SRC)
 	$(CC) $(SRC) -o $(PROJECT) $(LIBS)
