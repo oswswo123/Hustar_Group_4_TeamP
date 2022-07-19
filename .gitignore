@@ -1,11 +1,16 @@
 ## Ignore File ##
 
+# All
 data
 */data/*
 .ipynb_checkpoints
 */.ipynb_checkpoints/*
 
+# SH
+translator_key.json
+
 .idea
 db.sqlite3
 *.pyc
 __pycache__
+
