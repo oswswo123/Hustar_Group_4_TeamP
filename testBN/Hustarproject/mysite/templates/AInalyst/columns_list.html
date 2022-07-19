@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container my-3">
+
+    <table class="table">
+        <thead>
+        <tr class="table-dark" align="center" style="font-size: 10.5px">
+
+            <th style="width:10%">작성일</th>
+            <th style="width:30%">제목</th>
+            <th style="width:7%" >적정가격</th>
+            <th style="width:10%">투자의견</th>
+            <th style="width:7%">작성자</th>
+            <th style="width:10%">제공출처</th>
+            <th style="width:10%">기업정보</th>
+            <th style="width:10%">차트</th>
+            <th style="width:10%">첨부파일</th>
+
+        </tr>
+
+        </thead>
+
+
+        <tbody align="center">
+
+        {% if columns_list %}
+        {% for columns in columns_list %}
+        <tr>
+
+            <td style="font-size : 10px">{{ columns.create_date }}</td>
+            <td style="font-size : 13px">
+                <a href="http://hkconsensus.hankyung.com/apps.analysis/analysis.downpdf?report_idx=611183" onmouseover="$('#content_611183').show();" onmouseout="$('#content_611183').hide();" target="_blank">{{ columns.subject }}</a>
+<!--                {% url 'AInalyst:detail' columns.id %}-->
+            </td>
+            <td style="font-size : 12px">{{ columns.fair_price }}</td>
+            <td style="font-size : 13px">{{ columns.opinion }}</td>
+            <td style="font-size : 12px">{{ columns.writer }}</td>
+            <td style="font-size : 12px">{{ columns.stock_firm }}</td>
+            <td style="font-size : 13px">
+                <a href="https://comp.kisline.com/hi/HI0100M010GE.nice?stockcd=066570&nav=1">{{ columns.company_inf }}</a>
+            </td>
+            <td style="font-size : 13px">
+                <a href="http://hkconsensus.hankyung.com/apps.chart/chart.view_frame?report_type=CO&business_code=066570">{{ columns.chart }}</a>
+            </td>
+            <td style="font-size : 13px">
+                <a href="http://hkconsensus.hankyung.com/apps.analysis/analysis.downpdf?report_idx=611196">{{ columns.pdf_file }}</a>
+            </td>
+
+        </tr>
+        {% endfor %}
+        {% else %}
+        {% endif %}
+        </tbody>
+    </table>
+    <!-- 페이징처리 시작 -->
+    <ul class="pagination justify-content-center">
+        <!-- 이전페이지 -->
+        {% if columns_list.has_previous %}
+        <li class="page-item">
+            <a class="page-link" data-page="{{ columns_list.previous_page_number }}"
+                href="javascript:void(0)">이전</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
+        </li>
+        {% endif %}
+        <!-- 페이지리스트 -->
+        {% for page_number in columns_list.paginator.page_range %}
+        {% if page_number >= columns_list.number|add:-5 and page_number <= columns_list.number|add:5 %}
+        {% if page_number == columns_list.number %}
+        <li class="page-item active" aria-current="page">
+            <a class="page-link"  data-page="{{ page_number }}"
+               href="javascript:void(0)">{{ page_number }}</a>
+        </li>
+        {% else %}
+        <li class="page-item">
+            <a class="page-link" data-page="{{ page_number }}"
+           href="javascript:void(0)">{{ page_number }}</a>
+        </li>
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+        <!-- 다음페이지 -->
+        {% if columns_list.has_next %}
+        <li class="page-item">
+            <a class="page-link" data-page="{{ columns_list.next_page_number }}"
+               href="javascript:void(0)">다음</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
+        </li>
+        {% endif %}
+    </ul>
+    <!-- 페이징처리 끝 -->
+</div>
+
+{% endblock %}
