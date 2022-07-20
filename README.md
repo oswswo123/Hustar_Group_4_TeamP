@@ -1,4 +1,8 @@
 # Hustar 4조 팀프로젝트 진행 참고사항
+### 7.20(수)
+- src directory에 back_translator, text_processor 추가
+- back_translator : 역번역을 통해 data augmentation을 해주는 module
+- text_processor : PDF to TEXT를 비롯한 여러 텍스트 처리를 해주는 module
 
 ### 7.05(화)
 - 본격적인 프로젝트 시작
