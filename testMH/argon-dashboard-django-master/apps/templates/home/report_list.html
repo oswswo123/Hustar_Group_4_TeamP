@@ -1,0 +1,9 @@
+{% if report_list %}
+    <ul>
+        {% for report in report_list %}
+            <li><a href="/report/{{report.0}}/">{{report}}</a></li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>작성된 보고서가 없습니다.</p>
+{% endif %}
