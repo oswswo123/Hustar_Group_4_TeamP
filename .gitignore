@@ -8,6 +8,8 @@ data
 
 # SH
 translator_key.json
+model
+*/model/*
 
 .idea
 db.sqlite3
