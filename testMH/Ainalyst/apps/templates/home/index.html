@@ -200,12 +200,11 @@
                 <thead class="thead-light">
                   <tr>
                     <th scope="col">Create date</th>
+                    <th scope="col">Company</th>
                     <th scope="col">Subject</th>
-                    <th scope="col">Price</th>
                     <th scope="col">Opinion</th>
-                    <th scope="col">writer</th>
                     <th scope="col">Stock_firm</th>
-                    <th scope="col">Report</th>
+                    <th scope="col">Filename</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -213,12 +212,11 @@
                   {% for report in report_list %}
                 <tr>
                     <th scope="row"> {{report.create_date}} </th>
+                    <td> {{report.company}} </td>
                     <td> {{report.subject}} </td>
-                    <td> {{report.price}} </td>
                     <td> {{report.opinion}} </td>
-                    <td> {{report.writer}} </td>
                     <td> {{report.stock_firm}} </td>
-                    <td> {{report.report_id}} </td>
+                    <td> {{report.filename}} </td>
                 </tr>
 <!--                  <li><a href="/report/{{report.report_id}}/"></a></li>-->
                   {% endfor %}

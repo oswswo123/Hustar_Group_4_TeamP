@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.urls import reverse
-from .models import Report, Inference
+from .models import Report
 from datetime import date
 
 
@@ -27,6 +27,16 @@ def index(request):
                'num_negative_report': len(negative_report),
                }
     html_template = loader.get_template('home/index.html')
+    return HttpResponse(html_template.render(context, request))
+
+
+# @login_required(login_url="/login/")
+def tables(request):
+    report_list = Report.objects.order_by('-create_date')
+    context = {'segment': 'index',
+               'report_list': report_list,
+               }
+    html_template = loader.get_template('home/tables.html')
     return HttpResponse(html_template.render(context, request))
 
 
