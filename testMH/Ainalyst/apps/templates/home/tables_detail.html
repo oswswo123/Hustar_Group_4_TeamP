@@ -26,7 +26,7 @@
       </div>
     </div>
   </div>
-
+  
   <!-- Page content -->
   <div class="container-fluid mt--6">
     <div class="row">
@@ -34,7 +34,7 @@
         <div class="card">
           <!-- Card header -->
           <div class="card-header border-0">
-            <h3 class="mb-0">Report table</h3>
+            <h3 class="mb-0">{{report.title}}</h3>
           </div>
           <!-- Light table -->
           <div class="table-responsive">
@@ -44,7 +44,6 @@
 <!--                  <th scope="col" class="sort" data-sort="name">Create date</th>-->
                   <th scope="col">Create date</th>
                   <th scope="col">Company</th>
-                  <th scope="col">Title</th>
                   <th scope="col">Opinion</th>
                   <th scope="col">New Opinion</th>
                   <th scope="col">Stock Firm</th>
@@ -52,18 +51,18 @@
                 </tr>
               </thead>
               <tbody class="list">
-              {% if report_list %}
-                {% for report in report_list %}
-                    <tr>
-                      <td> {{report.create_date}}</td>
-                      <td> {{report.company}}</td>
-                      <th><a href="{% url 'tables_detail' report.id %}">{{report.title}}</a></th> <!-- class="font-weight-bold ml-1" target="_blank"-->
-                      <td> {{report.opinion}}</td>
-                      <td> {{report.new_opinion}}</td>
-                      <td> {{report.firm}}</td>
-                    </tr>
-                <!--                  <li><a href=""></a></li>-->
-                {% endfor %}
+              {% if report %}
+                <tr>
+<!--                      <th scope="row">-->
+                  <td> {{report.create_date}}</td>
+                  <td> {{report.company}}</td>
+                  <td> {{report.opinion}}</td>
+                  <td> {{report.new_opinion}}</td>
+                  <td> {{report.firm}}</td>
+<!--                      </th>-->
+                </tr>
+
+            <!--                  <li><a href=""></a></li>-->
               {% else %}
                 <tr>
                   <th scope="row"> No Report</th>
@@ -367,78 +366,33 @@
 <!--                </tr>-->
               </tbody>
             </table>
+            <ul>
+            <li>{{report.article}}</li>
+            </ul>
           </div>
           <!-- Card footer -->
           <div class="card-footer py-4">
             <nav aria-label="...">
               <ul class="pagination justify-content-end mb-0">
-                {% if report_list.has_previous %}
-                  <li class="page-item">
-                    <a class="page-link" href="?page=1" tabindex="-1">
-                        <i class="fas fa-angle-double-left"></i>
-                        <span class="sr-only">First</span>
-                    </a>
-                  </li>
-                  <li class="page-item">
-                      <a class="page-link" href="?page={{report_list.previous_page_number}}" tabindex="-1">
-                          <i class="fas fa-angle-left"></i>
-                          <span class="sr-only">Previous</span>
-                      </a>
-                  </li>
-                {% else %}
-                  <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1">
-                        <i class="fas fa-angle-double-left"></i>
-                        <span class="sr-only">First</span>
-                    </a>
-                  </li>
-                  <li class="page-item disabled">
-                      <a class="page-link" href="#" tabindex="-1">
-                          <i class="fas fa-angle-left"></i>
-                          <span class="sr-only">Previous</span>
-                      </a>
-                  </li>
-                {% endif %}
-                {% for page_number in report_list.paginator.page_range %}
-                  {% if page_number >= report_list.number|add:-2 and page_number <= report_list.number|add:2 %}
-                    {% if page_number == report_list.number %}
-                    <li class="page-item active">
-                        <a class="page-link" href="?page={{page_number}}">{{page_number}}</a>
-                    </li>
-                    {% else %}
-                    <li class="page-item">
-                        <a class="page-link" href="?page={{page_number}}">{{page_number}}</a>
-                    </li>
-                    {% endif %}
-                  {% endif %}
-                {% endfor %}
-                {% if report_list.has_next %}
-                  <li class="page-item">
-                    <a class="page-link" href="?page={{report_list.next_page_number}}">
-                      <i class="fas fa-angle-right"></i>
-                      <span class="sr-only">Next</span>
-                    </a>
-                  </li>
-                  <li class="page-item">
-                    <a class="page-link" href="?page={{report_list.paginator.num_pages}}">
-                      <i class="fas fa-angle-double-right"></i>
-                      <span class="sr-only">Last</span>
-                    </a>
-                  </li>
-                {% else %}
-                  <li class="page-item disabled">
-                    <a class="page-link" href="#">
-                      <i class="fas fa-angle-right"></i>
-                      <span class="sr-only">Last</span>
-                    </a>
-                  </li>
-                  <li class="page-item disabled">
-                    <a class="page-link" href="#">
-                      <i class="fas fa-angle-double-right"></i>
-                      <span class="sr-only">Last</span>
-                    </a>
-                  </li>
-                {% endif %}
+                <li class="page-item"> <!-- disabled -->
+                  <a class="page-link" href="#" tabindex="-1">
+                    <i class="fas fa-angle-left"></i>
+                    <span class="sr-only">Previous</span>
+                  </a>
+                </li>
+<!--                <li class="page-item active">-->
+<!--                  <a class="page-link" href="#">1</a>-->
+<!--                </li>-->
+<!--                <li class="page-item">-->
+<!--                  <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>-->
+<!--                </li>-->
+<!--                <li class="page-item"><a class="page-link" href="#">3</a></li>-->
+                <li class="page-item">
+                  <a class="page-link" href="#">
+                    <i class="fas fa-angle-right"></i>
+                    <span class="sr-only">Next</span>
+                  </a>
+                </li>
               </ul>
             </nav>
           </div>
@@ -773,5 +727,5 @@
 
 {% endblock content %}
 
-<!-- Specific JS goes HERE -->
+<!-- Specific JS goes HERE --> 
 {% block javascripts %}{% endblock javascripts %}

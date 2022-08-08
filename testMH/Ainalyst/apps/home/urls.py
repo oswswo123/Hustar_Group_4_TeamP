@@ -13,7 +13,8 @@ urlpatterns = [
 
     # Matches any html file
     path('tables.html', views.tables, name='tables'),
-    re_path(r'^.*\.*', views.pages, name='pages'),
+    path('tables.html/<int:report_id>', views.tables_detail, name='tables_detail'),
+    # re_path(r'^.*\.*', views.pages, name='pages'),
     # path('report/', views.report, name='home'),
 
 ]
