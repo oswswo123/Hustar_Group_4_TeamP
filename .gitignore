@@ -10,6 +10,7 @@ data
 translator_key.json
 model
 */model/*
+*.pkl
 
 .idea
 *.pyc
