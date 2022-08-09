@@ -19,6 +19,5 @@ class Report(models.Model):
     # price = models.CharField(max_length=20)    # 가격
     # writer = models.CharField(max_length=20)    # 작성
 
-
-# class Inference(models.Model):
-#     report = models.ForeignKey(Report, on_delete=models.CASCADE)
+    def to_json(self):
+        return {"create_date": self.create_date}
