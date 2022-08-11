@@ -29,9 +29,6 @@ class PostgresDB:
             print(f"ERROR:: Failed to execute SQL query... (Error code: {e})")
             return -1
 
-    # def commit(self):
-    #     self.db.commit()
-
 
 def main():
     try:

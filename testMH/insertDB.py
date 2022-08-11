@@ -21,20 +21,14 @@ def main():
     df = pd.read_csv('./convert_inference_data.csv')
 
     for idx, (company, title, article, opinion, firm, date, predictions, pred_rate) in df.iterrows():
-        print(f"{idx}: {date}, {company}, {title}, {opinion}, {predictions}, {pred_rate}")
-        # ainalyst.execute(f"INSERT INTO home_report(create_date, company, title, article, opinion, new_opinion, firm)"
-        #                  f" VALUES(%s, %s, %s, %s, %s, %s, %s);", (date, company, title, article, opinion, predictions, firm))
-        ainalyst.execute(f"UPDATE home_report SET pred_rate='%s'"
-                         f"WHERE create_date=%s AND company=%s AND title=%s AND article=%s AND opinion=%s AND new_opinion=%s AND firm=%s",
-                         (pred_rate, date, company, title, article, opinion, predictions, firm))
+        # print(f"{idx}: {date}, {company}, {title}, {opinion}, {predictions}, {pred_rate}")
+        ainalyst.execute(f"INSERT INTO home_report(create_date, company, title, article, opinion, new_opinion, firm, pred_rate)"
+                         f" VALUES(%s, %s, %s, %s, %s, %s, %s, %s);", (date, company, title, article, opinion, predictions, firm, pred_rate))
+        # ainalyst.execute(f"UPDATE home_report SET pred_rate='%s'"
+        #                  f"WHERE create_date=%s AND company=%s AND title=%s AND article=%s AND opinion=%s AND new_opinion=%s AND firm=%s",
+        #                  (pred_rate, date, company, title, article, opinion, predictions, firm))
 
     print("Done")
-    # print()
-
-    # datas = ainalyst.execute("SELECT * FROM home_report;")
-    # print("SELECT * FROM home_report;", end='\n')
-    # for d in datas:
-    #     print(d)
 
 
 if __name__ == '__main__':
