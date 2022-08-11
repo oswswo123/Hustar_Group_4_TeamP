@@ -15,9 +15,5 @@ class Report(models.Model):
     article = models.TextField(blank=True, null=True)  # 요약문
     opinion = models.CharField(max_length=20, null=True, blank=True)   # 투자 의견
     new_opinion = models.CharField(max_length=20, null=True, blank=True)   # 새로운 투자 의견
+    pred_rate = models.FloatField(blank=True, null=True)     # 예측 확률
     firm = models.CharField(max_length=20)    # 증권사
-    # price = models.CharField(max_length=20)    # 가격
-    # writer = models.CharField(max_length=20)    # 작성
-
-    def to_json(self):
-        return {"create_date": self.create_date}
