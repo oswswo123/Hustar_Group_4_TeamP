@@ -20,7 +20,7 @@ def index(request):
     start, end = date.today() - timedelta(days=30), date.today()    # 한달간 데이터 선택을 위한 Variable
 
     report_list = Report.objects.order_by('-create_date', '-id')
-    new_report = report_list.filter(create_date=date.today())
+    new_report = report_list.filter(create_date='2022-07-28')
     positive_reports = report_list.filter(pos_Q)
     negative_reports = report_list.filter(neg_Q)
     new_positive = positive_reports.filter(create_date__range=[start, end])

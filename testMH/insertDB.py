@@ -10,7 +10,7 @@ def main():
         print(f"Failed connect to db: ERROR code ({e})")
         return -1
 
-    # ainalyst.execute(f"DELETE FROM home_report;")
+    ainalyst.execute(f"DELETE FROM home_report;")
     # datas = ainalyst.execute("SELECT * FROM home_report;")
     # print("SELECT * FROM home_report;", end='\n')
     # for d in datas:
@@ -18,10 +18,10 @@ def main():
     # print("-"*100)
     # print()
 
-    df = pd.read_csv('./convert_inference_data.csv')
+    df = pd.read_csv('./data/convert_inference_data.csv')
 
     for idx, (company, title, article, opinion, firm, date, predictions, pred_rate) in df.iterrows():
-        # print(f"{idx}: {date}, {company}, {title}, {opinion}, {predictions}, {pred_rate}")
+        print(f"{idx}: {date}, {company}, {title}, {opinion}, {predictions}, {pred_rate}")
         ainalyst.execute(f"INSERT INTO home_report(create_date, company, title, article, opinion, new_opinion, firm, pred_rate)"
                          f" VALUES(%s, %s, %s, %s, %s, %s, %s, %s);", (date, company, title, article, opinion, predictions, firm, pred_rate))
         # ainalyst.execute(f"UPDATE home_report SET pred_rate='%s'"
