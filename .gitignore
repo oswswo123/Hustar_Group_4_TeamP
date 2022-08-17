@@ -8,8 +8,8 @@ data
 
 # SH
 translator_key.json
-model
-*/model/*
+models
+*/models/*
 *.pkl
 
 .idea
