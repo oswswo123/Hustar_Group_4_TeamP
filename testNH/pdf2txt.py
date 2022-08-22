@@ -8,7 +8,7 @@ def text(pdffile):
 
 for idx in range(1, 476):
     try :
-        file_name = f"/home/piai/다운로드/강력매수/strongbuy{idx}.pdf"
+        file_name = f"strongbuy{idx}.pdf"
         print(file_name)
         text(file_name)
 

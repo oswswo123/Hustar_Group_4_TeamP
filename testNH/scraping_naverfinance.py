@@ -29,7 +29,7 @@ browser = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_optio
 df = pd.DataFrame(columns=("company", "title", "article", "opinion", "firm", "date"))
 
 for i in range(1,1735):
-    df.to_csv('/home/piai/다운로드/information.csv', index=False)
+    df.to_csv('report_dataset.csv', index=False)
     browser.get(f"https://finance.naver.com/research/company_list.naver?&page={i}")
     time.sleep(1)
     for j in range(0, 6):
@@ -53,4 +53,4 @@ for i in range(1,1735):
             print(df.tail())
             browser.back()
             time.sleep(1)
-df.to_csv('/home/piai/다운로드/information.csv', index=False)
+df.to_csv('report_dataset.csv', index=False)

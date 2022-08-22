@@ -36,59 +36,72 @@ def set_seeds(seed=42):
     torch.backends.cudnn.benchmark = False # for faster training, but not deterministic
 
 def tokenize(data):
-  return tokenizer(data['article'], max_length=512, pad_to_max_length = True, truncation=True)
+    tokenizer = AutoTokenizer.from_pretrained('monologg/kobert')
+    return tokenizer(data['article'], max_length=512, pad_to_max_length = True, truncation=True)
+
+def loaddataset(file):
+    tokenizer = AutoTokenizer.from_pretrained('monologg/kobert')
+    test_dataset = load_dataset('csv', data_files=file)
+    test_dataset = test_dataset.map(tokenize, batched=True)
+    test_dataset['train'] = test_dataset['train'].remove_columns(
+        ['Unnamed: 0', 'company', 'title', 'article', 'opinion', 'firm', 'date'])
+    data_collator = DataCollatorWithPadding(tokenizer=tokenizer)
+    eval_dataloader = DataLoader(test_dataset['train'], shuffle=False, batch_size=1, collate_fn=data_collator)
+    return eval_dataloader
+
+def loadmodel(model):
+    device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
+    config = AutoConfig.from_pretrained('nile/koBERT-finetuned-wholemasking20')
+    config.num_labels = 2
+    load_model = AutoModelForSequenceClassification.from_pretrained('nile/koBERT-finetuned-wholemasking20',
+                                                                    config=config)
+    load_model.to(device)
+    load_model.load_state_dict(torch.load(model))
+    return load_model
+
+def inference(load_model, eval_dataloader, file):
+    device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
+    load_model.eval()
+
+    probabilities = list()
+    predictions = list()
+
+    for step, batch in enumerate(tqdm(eval_dataloader, desc="inference", mininterval=0.1)):
+        batch_input_ids = batch["input_ids"].to(device)
+        batch_attention_mask = batch["attention_mask"].to(device)
+
+        with torch.no_grad():
+            outputs = load_model(
+                input_ids=batch_input_ids,
+                attention_mask=batch_attention_mask,
+            )
+
+            prob = torch.nn.functional.softmax(outputs.logits, dim=-1)
+            predict = torch.argmax(prob, axis=1)
+            prob = np.trunc(np.max(prob.detach().cpu().numpy(), axis=1) * 100)
+            predict = predict.detach().cpu().numpy()
+
+            probabilities.append(prob[0])
+            predictions.append(predict[0])
+
+    data = pd.read_csv(file)
+    convert_predictions = list(map(lambda x: "매수" if x == 1 else "매도", predictions))
+    inference_dataframe = data.drop(labels="Unnamed: 0", axis=1)
+    inference_dataframe["predictions"] = convert_predictions
+    inference_dataframe["pred_rate"] = probabilities
+    inference_dataframe.to_csv("koBERTinferenced.csv", index=False)
+
+
 
 set_seeds()
-
-tokenizer = AutoTokenizer.from_pretrained('monologg/kobert')
-
-test_dataset = load_dataset('csv', data_files='/content/drive/MyDrive/reviewdataset/inferencedatasetprocessed.csv')
-
-test_dataset = test_dataset.map(tokenize, batched=True)
-
-test_dataset['train'] = test_dataset['train'].remove_columns(['Unnamed: 0', 'company', 'title', 'article', 'opinion', 'firm', 'date'])
-
-data_collator = DataCollatorWithPadding(tokenizer=tokenizer)
-
-eval_dataloader = DataLoader(test_dataset['train'], shuffle=False, batch_size=1, collate_fn=data_collator)
-
-device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
-config = AutoConfig.from_pretrained('nile/koBERT-finetuned-wholemasking20')
-config.num_labels = 2
-load_model = AutoModelForSequenceClassification.from_pretrained('nile/koBERT-finetuned-wholemasking20', config=config)
-load_model.to(device)
-load_model.load_state_dict(torch.load("/content/drive/MyDrive/reviewdataset/koBERTtrain.pt"))
+file = "inferencedatasetprocessed.csv"
+eval_dataloader = loaddataset(file)
+model = "koBERTtrain.pt"
+load_model = loadmodel(model)
 
 gc.collect()
 torch.cuda.empty_cache()
 
-load_model.eval()
+inference(load_model, eval_dataloader, file)
 
-probabilities = list()
-predictions = list()
 
-for step, batch in enumerate(tqdm(eval_dataloader, desc="inference", mininterval=0.1)):
-    batch_input_ids = batch["input_ids"].to(device)
-    batch_attention_mask = batch["attention_mask"].to(device)
-
-    with torch.no_grad():
-        outputs = load_model(
-            input_ids=batch_input_ids,
-            attention_mask=batch_attention_mask,
-        )
-
-        prob = torch.nn.functional.softmax(outputs.logits, dim=-1)
-        predict = torch.argmax(prob, axis=1)
-        prob = np.trunc(np.max(prob.detach().cpu().numpy(), axis=1) * 100)
-        predict = predict.detach().cpu().numpy()
-
-        probabilities.append(prob[0])
-        predictions.append(predict[0])
-
-inference = pd.read_csv('/content/drive/MyDrive/reviewdataset/inferencedatasetprocessed.csv')
-
-convert_predictions = list(map(lambda x: "매수" if x == 1 else "매도", predictions))
-inference_dataframe = inference.drop(labels="Unnamed: 0", axis=1)
-inference_dataframe["predictions"] = convert_predictions
-inference_dataframe["pred_rate"] = probabilities
-inference_dataframe.to_csv(f"/content/drive/MyDrive/reviewdataset/koBERTinferenced.csv", index=False)
