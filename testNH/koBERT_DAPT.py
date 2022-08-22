@@ -58,49 +58,54 @@ def whole_word_masking_data_collator(features):
 
     return default_data_collator(features)
 
+def loaddataset(file):
+    dataset = load_dataset("csv", data_files=file)
+    tokenized_dataset = dataset.map(tokenize_function, batched=True, remove_columns=['Unnamed: 0', 'company', 'title', 'article', 'opinion', 'firm', 'date'])
+    lm_datasets = tokenized_dataset.map(group_texts, batched=True)
+    downsampled_dataset = lm_datasets["train"].train_test_split(test_size=0.1, seed=42)
+    return downsampled_dataset
+
+def train(downsampled_dataset):
+    batch_size = 4
+    logging_steps = len(downsampled_dataset["train"]) // batch_size
+    model_name = 'koBERT'
+
+    training_args = TrainingArguments(
+        output_dir=f"{model_name}-finetuned-wholemasking20",
+        num_train_epochs=20,
+        overwrite_output_dir=True,
+        evaluation_strategy="steps",
+        eval_steps=500,
+        save_total_limit=3,
+        learning_rate=2e-5,
+        weight_decay=0.01,
+        per_device_train_batch_size=batch_size,
+        per_device_eval_batch_size=batch_size,
+        push_to_hub=True,
+        fp16=True,
+        logging_steps=logging_steps,
+        remove_unused_columns=False,
+        load_best_model_at_end=True,
+    )
+
+    trainer = Trainer(
+        model=model,
+        args=training_args,
+        train_dataset=downsampled_dataset["train"],
+        eval_dataset=downsampled_dataset["test"],
+        data_collator=whole_word_masking_data_collator,
+        callbacks=[EarlyStoppingCallback(early_stopping_patience=5)]
+    )
+
+    trainer.train()
+    trainer.push_to_hub()
+
 model = AutoModelForMaskedLM.from_pretrained('monologg/kobert')
 tokenizer = AutoTokenizer.from_pretrained('monologg/kobert')
-
-dataset = load_dataset("csv", data_files="/content/drive/MyDrive/reviewdataset/inferencedatasetprocessed.csv")
-
-tokenized_dataset = dataset.map(tokenize_function, batched=True, remove_columns=['Unnamed: 0', 'company', 'title', 'article', 'opinion', 'firm', 'date'])
-
-lm_datasets = tokenized_dataset.map(group_texts, batched=True)
-
-downsampled_dataset = lm_datasets["train"].train_test_split(test_size=0.1, seed=42)
-
+file = "inferencedatasetprocessed.csv"
+downsampled_dataset = loaddataset(file)
 notebook_login()
+train(downsampled_dataset)
 
-batch_size = 4
-logging_steps = len(downsampled_dataset["train"]) // batch_size
-model_name = 'koBERT'
 
-training_args = TrainingArguments(
-    output_dir=f"{model_name}-finetuned-wholemasking20",
-    num_train_epochs = 20,
-    overwrite_output_dir=True,
-    evaluation_strategy="steps",
-    eval_steps = 500,
-    save_total_limit = 3,
-    learning_rate=2e-5,
-    weight_decay=0.01,
-    per_device_train_batch_size=batch_size,
-    per_device_eval_batch_size=batch_size,
-    push_to_hub=True,
-    fp16=True,
-    logging_steps=logging_steps,
-    remove_unused_columns=False,
-    load_best_model_at_end = True,
-)
 
-trainer = Trainer(
-    model=model,
-    args=training_args,
-    train_dataset=downsampled_dataset["train"],
-    eval_dataset=downsampled_dataset["test"],
-    data_collator=whole_word_masking_data_collator,
-    callbacks = [EarlyStoppingCallback(early_stopping_patience=5)]
-)
-
-trainer.train()
-trainer.push_to_hub()
