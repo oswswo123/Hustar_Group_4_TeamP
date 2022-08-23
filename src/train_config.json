@@ -1,0 +1,24 @@
+{
+    "fold_length": 5,
+    "batch": 16,
+    "seed_val": 42,
+    "epochs": 3,
+    "data_path": "./data/",
+    "data_file": [
+        "strongbuy.csv",
+        "sell.csv",
+        "holddown.csv",
+        "strongbuy_expand_google_en.csv",
+        "strongbuy_expand_google_zhcn.csv",
+        "strongbuy_expand_pororo_en.csv",
+        "sell_expand_google_en.csv",
+        "sell_expand_google_zhcn.csv",
+        "sell_expand_pororo_en.csv",
+        "holddown_expand_google_en.csv",
+        "holddown_expand_google_zhcn.csv",
+        "holddown_expand_pororo_en.csv"
+        ],    
+    "model_path": "./models/",
+    "pretrained_model": "kb-albert-char-base-v2",
+    "save_model": "kbalbert_after_transfer_learning.pt"
+}
