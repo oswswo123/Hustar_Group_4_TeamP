@@ -27,3 +27,19 @@
 	- Naver Papago를 활용하여 back translation을 실행하는 method
 	- target_lang의 언어로 번역되었다가, 다시 한글로 번역된 결과 return
 -------------------
+### data_control.py
+- Data를 load하고, split하고, loader로 바꾸는 등 학습을 위한 데이터를 관리하는 module
+- 요구 패키지 : torch, sklearn
+-------------------
+### etc_modules.py
+- metric이나 결과물의 save와 관련된 처리들을 하는 module
+- 요구 패키지 : torch
+-------------------
+### k_fold_train.py
+- model을 train시키기 위한 package
+- 필요한 parameter는 train_config.json에 작성하여 실행
+-------------------
+### inference.py
+- train된 model을 활용해 inference하기 위한 package
+- 필요한 parameter는 inference_config.json에 작성하여 실행
+-------------------
