@@ -1,0 +1,15 @@
+{
+    "fold_length": 5,
+    "batch": 16,
+    "seed_val": 42,
+    "epochs": 3,
+    "data_path": "./data/",
+    "data_file": [
+        "train_dataset.csv",
+        "sell_backtranslated_papago_English.csv",
+        "buy_backtranslated_papago_English.csv"
+    ],
+    "model_path": "./models/",
+    "pretrained_model": "kb-albert-char-base-v2",
+    "save_model": "kbalbert_after_transfer_learning.pt"
+}
