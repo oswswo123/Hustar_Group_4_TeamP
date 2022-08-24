@@ -27,6 +27,23 @@
 	- Naver Papago를 활용하여 back translation을 실행하는 method
 	- target_lang의 언어로 번역되었다가, 다시 한글로 번역된 결과 return
 -------------------
+### backtranslation_papago.py
+- Document Data augmentation을 위한 back translator module
+- 요구 패키지 : selenium, webdriver_manager, json
+- translate(articles, flanguage)
+	- papago 사이트에서 flanguage로 번역하는 method
+	- flanguage로 번역된 리스트 return
+- backtranslate(translated, language, flanguage, label)
+	- papago 사이트에서 다시 한국어로 번역하는 method
+	- 한글로 번역된 리스트 return
+	- 번역된 article과 sell or buy 레이블이 있는 데이터프레임 csv로 저장
+- backtranslation_papago_config.json에서 번역할 언어를 English와 Chinese 중 선택하여 입력
+-------------------
+### DAPT.py
+- 범용 corpus로 학습된 사전학습언어모델을 금융데이터로 fine-tuning하여서 huggingface에 업로드하는 module
+- 요구 패키지 : transformers, datasets, huggingface_hub
+- DAPT_config.json에서 사전학습언어모델을 koBERT나 roBERTa 중 선택하여 입력
+-------------------
 ### data_control.py
 - Data를 load하고, split하고, loader로 바꾸는 등 학습을 위한 데이터를 관리하는 module
 - 요구 패키지 : torch, sklearn
