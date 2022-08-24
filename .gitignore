@@ -13,6 +13,7 @@ translator_key.json
 models
 */models/*
 *.pkl
+*.pt
 
 .idea
 *.pyc
