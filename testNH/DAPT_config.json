@@ -1,0 +1,6 @@
+{
+    "model_name": "koBERT",
+    "batch": 4,
+    "epochs": 20,
+    "data_file_path": "./data/inference_dataset.csv"
+}
