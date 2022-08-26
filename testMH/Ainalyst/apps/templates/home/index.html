@@ -54,7 +54,7 @@
                   <div class="row">
                     <div class="col">
                       <h5 class="card-title text-uppercase text-muted mb-0">Positive Report</h5>
-                      <span class="h2 font-weight-bold mb-0">{{total_num_positive}}</span>
+                      <span class="h2 font-weight-bold mb-0">{{total_new_num_positive}}</span>
                     </div>
                     <div class="col-auto">
                       <div class="icon icon-shape bg-gradient-orange text-white rounded-circle shadow">
@@ -76,7 +76,7 @@
                   <div class="row">
                     <div class="col">
                       <h5 class="card-title text-uppercase text-muted mb-0">Negative Report</h5>
-                      <span class="h2 font-weight-bold mb-0">{{total_num_negative}}</span>
+                      <span class="h2 font-weight-bold mb-0">{{total_new_num_negative}}</span>
                     </div>
                     <div class="col-auto">
                       <div class="icon icon-shape bg-gradient-green text-white rounded-circle shadow">
@@ -97,7 +97,7 @@
                 <div class="card-body">
                   <div class="row">
                     <div class="col">
-                      <h5 class="card-title text-uppercase text-muted mb-0">Today's Hot Topic</h5>
+                      <h5 class="card-title text-uppercase text-muted mb-0">Hot Topic for this month</h5>
                       <span class="h4 font-weight-bold mb-0">{{hot_topic.0.0}}</span>
                       <span class="h6 font-weight-bold mb-0"> - 리포트 수: {{hot_topic.0.1}}</span><br>
                       <span class="h4 font-weight-bold mb-0">{{hot_topic.1.0}}</span>
@@ -122,7 +122,7 @@
     <!-- Page content -->
     <div class="container-fluid mt--6">
       <div class="row">
-        <div class="col-xl-8">
+        <div class="col-xl-7">
           <div class="card bg-default">
             <div class="card-header bg-transparent">
               <div class="row align-items-center">
@@ -157,14 +157,14 @@
             </div>
           </div>
         </div>
-        <div class="col-xl-4">
+        <div class="col">
           <div class="container">
             <div class="card">
               <div class="card-header bg-transparent">
                 <div class="row align-items-center">
                   <div class="col">
                     <h6 class="text-uppercase text-muted ls-1 mb-1">Ratio of Opinion</h6>
-                    <h5 class="h3 mb-0">Total reports</h5>
+                    <h5 class="h3 mb-0">Before</h5>
                   </div>
                 </div>
               </div>
@@ -173,6 +173,27 @@
                   <div class="chart">
     <!--                <canvas id="chart-bars" class="chart-canvas"></canvas>-->
                     <canvas id="myChart_bars2" class="chart-canvas" style="width:100%; height:100%"></canvas>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="container">
+            <div class="card">
+              <div class="card-header bg-transparent">
+                <div class="row align-items-center">
+                  <div class="col">
+                    <h6 class="text-uppercase text-muted ls-1 mb-1">Ratio of Opinion</h6>
+                    <h5 class="h3 mb-0">After</h5>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body">
+                <!-- Chart -->
+                  <div class="chart">
+    <!--                <canvas id="chart-bars" class="chart-canvas"></canvas>-->
+                    <canvas id="myChart_bars3" class="chart-canvas" style="width:100%; height:100%"></canvas>
                   </div>
               </div>
             </div>
@@ -194,6 +215,7 @@
   <script>
     const bar_chart1 = document.getElementById('myChart_bars1').getContext('2d');
     const bar_chart2 = document.getElementById('myChart_bars2').getContext('2d');
+    const bar_chart3 = document.getElementById('myChart_bars3').getContext('2d');
     const myChart1 = new Chart(bar_chart1, {
         type: 'bar',
         data: {
@@ -224,10 +246,31 @@
     const myChart2 = new Chart(bar_chart2, {
         type: 'bar',
         data: {
+            labels: ['매수', '중립', '매도'],
+            datasets: [{
+                label: '투자 의견',
+                data: [{{origin_num_positive}}, {{origin_num_hold}}, {{origin_num_negative}}],
+                backgroundColor: ['rgba(219, 68, 85, 0.9)', 'rgba(30, 120, 30, 0.9)' ,'rgba(54, 162, 235, 0.9)'],
+                borderColor: ['rgba(219, 68, 85, 1)', 'rgba(30, 120, 30, 0.9)' , 'rgba(54, 162, 235, 1)'],
+            }]
+        },
+        options: {
+          responsive: false,
+            scales: {
+                yAxes: [{
+                  ticks: { beginAtZero: true }
+                }]
+            }
+        }
+    });
+
+    const myChart3 = new Chart(bar_chart3, {
+        type: 'bar',
+        data: {
             labels: ['매수', '매도'],
             datasets: [{
                 label: '투자 의견',
-                data: [{{total_num_positive}}, {{total_num_negative}}],
+                data: [{{total_new_num_positive}}, {{total_new_num_negative}}],
                 backgroundColor: ['rgba(219, 68, 85, 0.9)', 'rgba(54, 162, 235, 0.9)'],
                 borderColor: ['rgba(219, 68, 85, 1)', 'rgba(54, 162, 235, 1)'],
             }]

@@ -16,16 +16,23 @@ from collections import Counter
 
 @login_required(login_url="/login/")
 def index(request):
+    origin_pos_Q = Q(opinion='Buy') | Q(opinion='매수') | Q(opinion='강력매수') | Q(opinion='StrongBuy') |\
+                   Q(opinion='비중확대') | Q(opinion='시장수익률상회') | Q(opinion='OutPerform')    # 매수 / 매도 report 선택을 위한 QuerySet
+    origin_hold_Q = Q(opinion='Hold') | Q(opinion='없음') | Q(opinion='Neutral') | Q(opinion='중립') | Q(opinion='투자의견없음') | Q(opinion='시장평균')
     pos_Q, neg_Q = Q(new_opinion='매수'), Q(new_opinion='매도')    # 매수 / 매도 report 선택을 위한 QuerySet
-    start, end = date.today() - timedelta(days=30), date.today()    # 한달간 데이터 선택을 위한 Variable
 
+    start, end = date.today() - timedelta(days=30), date.today()    # 한달간 데이터 선택을 위한 Variable
     report_list = Report.objects.order_by('-create_date', '-id')
     new_report = report_list.filter(create_date='2022-07-28')
-    positive_reports = report_list.filter(pos_Q)
-    negative_reports = report_list.filter(neg_Q)
-    new_positive = positive_reports.filter(create_date__range=[start, end])
-    new_negative = negative_reports.filter(create_date__range=[start, end])
-    hot_topic = Counter([report.company for report in report_list.filter(create_date__range=[start, end])]).most_common()
+    origin_positive_reports = Report.objects.order_by('-create_date', '-id').filter(origin_pos_Q)
+    origin_hold_reports = Report.objects.order_by('-create_date', '-id').filter(origin_hold_Q)
+    origin_negative_reports = Report.objects.order_by('-create_date', '-id').filter(~(origin_pos_Q | origin_hold_Q))
+
+    new_positive_reports = report_list.filter(pos_Q)
+    new_negative_reports = report_list.filter(neg_Q)
+    new_positive = new_positive_reports.filter(create_date__range=['2022-07-01', '2022-07-28'])
+    new_negative = new_negative_reports.filter(create_date__range=['2022-07-01', '2022-07-28'])
+    hot_topic = Counter([report.company for report in report_list.filter(create_date__range=['2022-07-01', '2022-07-28'])]).most_common()
 
     # Variable for graph
     # 1년치 데이터 선택, range: 2021-08.01 ~ 2022-08-09
@@ -55,8 +62,11 @@ def index(request):
 
     context = {'segment': 'index',
                'total_num_report': len(report_list),    # DB에 저장된 전체 리포트 수
-               'total_num_positive': len(positive_reports),    # 전체 긍정 리포트 수
-               'total_num_negative': len(negative_reports),    # 전체 부정 리포트 수
+               'total_new_num_positive': len(new_positive_reports),    # 전체 긍정 리포트 수
+               'total_new_num_negative': len(new_negative_reports),    # 전체 부정 리포트 수
+               'origin_num_positive': len(origin_positive_reports),  # 전체 긍정 리포트 수
+               'origin_num_hold': len(origin_hold_reports),  # 전체 긍정 리포트 수
+               'origin_num_negative': len(origin_negative_reports),  # 전체 부정 리포트 수
                'new_reports': len(new_report),    # 당일 올라온 새 리포트 수
                'new_positive': len(new_positive),    # 최근 한달 긍정 리포트 수
                'new_negative': len(new_negative),    # 최근 한달 부정 리포트 수
