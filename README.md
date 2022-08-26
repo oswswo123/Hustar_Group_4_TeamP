@@ -1,4 +1,9 @@
 # Hustar 4조 팀프로젝트 진행 참고사항
+### 8.24(수)
+- Ainalyst Django file Final Upload
+- Update postgreSQL.py (main문 삭제)
+- Update insertDB.py (DB에 데이터 입력 시 사용)
+
 ### 8.23(화)
 - train, inference 모듈화 완료
 

@@ -47,6 +47,7 @@
                   <th scope="col">Title</th>
                   <th scope="col">Opinion</th>
                   <th scope="col">New Opinion</th>
+                  <th scope="col">Predict Rate</th>
                   <th scope="col">Stock Firm</th>
                   <th scope="col"></th>
                 </tr>
@@ -59,7 +60,12 @@
                       <td> {{report.company}}</td>
                       <th><a href="{% url 'tables_detail' report.id %}">{{report.title}}</a></th> <!-- class="font-weight-bold ml-1" target="_blank"-->
                       <td> {{report.opinion}}</td>
-                      <td> {{report.new_opinion}}</td>
+                    {% if report.new_opinion == '매수' %}
+                      <td class="text-danger"> {{report.new_opinion}}</td>
+                    {% else %}
+                      <td class="text-primary"> {{report.new_opinion}}</td>
+                    {% endif %}
+                      <td> {{report.pred_rate}}</td>
                       <td> {{report.firm}}</td>
                     </tr>
                 {% endfor %}
