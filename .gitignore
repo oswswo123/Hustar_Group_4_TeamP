@@ -1,0 +1,57 @@
+## Ignore File ##
+
+# All
+data
+*/data/*
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+*.csv
+*.zip
+wandb/
+runs/
+kb-albert-char-base-v2
+
+# SH
+translator_key.json
+models
+*/models/*
+*.pkl
+*.pt
+
+.idea
+*.pyc
+__pycache__
+
+
+# byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# tests and coverage
+*.pytest_cache
+.coverage
+
+# database & logs
+*.db
+*.sqlite3
+*.cache
+*.log
+
+# venv
+.env
+.venv
+
+# other
+.DS_Store
+
+# javascript
+package-lock.json
+
+staticfiles/*
+!staticfiles/.gitkeep 
+.vscode/symbols.json
+
+apps/static/assets/node_modules
+apps/static/assets/yarn.lock
+apps/static/assets/.temp
+

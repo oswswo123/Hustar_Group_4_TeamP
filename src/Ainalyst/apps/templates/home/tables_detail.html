@@ -1,0 +1,136 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Tables {% endblock title %}
+
+{% block content %}
+
+  <div class="header bg-primary pb-6">
+    <div class="container-fluid">
+      <div class="header-body">
+        <div class="row align-items-center py-4">
+          <div class="col-lg-6 col-7">
+            <h6 class="h2 text-white d-inline-block mb-0">Tables</h6>
+            <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+              <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
+                <li class="breadcrumb-item"><a href="#">Tables</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Tables</li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Page content -->
+  <div class="container-fluid mt--6">
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <!-- Card header -->
+          <div class="card-header border-1">
+            <h2 class="mb-0">{{report.title}}</h2>
+          </div>
+
+          <!-- Light table -->
+          <div class="card-body">
+            <div class="card-title border-bottom">
+              <div class="row mx-2">
+                <div class="col">
+                  <h4 class="mb-0"> 작성일: {{report.create_date}} </h4>
+                </div>
+                <div class="col">
+                  <h4 class="mb-0"> 기존 투자의견: {{report.opinion}} </h4>
+                </div>
+              </div>
+              <div class="row mx-2">
+                <div class="col">
+                  <h4 class="mb-0"> 기업명: {{report.company}} </h4>
+                </div>
+                <div class="col">
+                  <h4 class="mb-0"> 새로운 투자의견: {{report.new_opinion}} </h4>
+                </div>
+              </div>
+              <div class="row mb-4 mx-2">
+                <div class="col">
+                  <h4 class="mb-0"> 증권사: {{report.firm}} </h4>
+                </div>
+                <div class="col">
+                  <h4 class="mb-0"> 예측 확률: {{report.pred_rate}}% </h4>
+                </div>
+              </div>
+            </div>
+            <div class="card-text pt-4">
+              <ul>
+              <li>{{report.article}}</li>
+              </ul>
+            </div>
+          </div>
+<!--            <div class="table-responsive">-->
+<!--              <table class="table align-items-center table-flush">-->
+<!--                <thead class="thead-light">-->
+<!--                  <tr>-->
+<!--                    <th scope="col">Create date</th>-->
+<!--                    <th scope="col">Company</th>-->
+<!--                    <th scope="col">Opinion</th>-->
+<!--                    <th scope="col">New Opinion</th>-->
+<!--                    <th scope="col">Stock Firm</th>-->
+<!--                    <th scope="col"></th>-->
+<!--                  </tr>-->
+<!--                </thead>-->
+<!--                <tbody class="list">-->
+<!--                {% if report %}-->
+<!--                  <tr>-->
+<!--                    <td> {{report.create_date}}</td>-->
+<!--                    <td> {{report.company}}</td>-->
+<!--                    <td> {{report.opinion}}</td>-->
+<!--                    <td> {{report.new_opinion}}</td>-->
+<!--                    <td> {{report.firm}}</td>-->
+<!--                  </tr>-->
+<!--                {% else %}-->
+<!--                  <tr>-->
+<!--                    <th scope="row"> No Report</th>-->
+<!--                    <td></td>-->
+<!--                  </tr>-->
+<!--                {% endif %}-->
+<!--                </tbody>-->
+<!--              </table>-->
+<!--            </div>-->
+          <!-- Card footer -->
+          <div class="card-footer">
+<!--            <nav aria-label="...">-->
+<!--              <ul class="pagination justify-content-end mb-0">-->
+<!--                <li class="page-item"> &lt;!&ndash; disabled &ndash;&gt;-->
+<!--                  <a class="page-link" href="#" tabindex="-1">-->
+<!--                    <i class="fas fa-angle-left"></i>-->
+<!--                    <span class="sr-only">Previous</span>-->
+<!--                  </a>-->
+<!--                </li>-->
+<!--                <li class="page-item active">-->
+<!--                  <a class="page-link" href="#">1</a>-->
+<!--                </li>-->
+<!--                <li class="page-item">-->
+<!--                  <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>-->
+<!--                </li>-->
+<!--                <li class="page-item"><a class="page-link" href="#">3</a></li>-->
+<!--                <li class="page-item">-->
+<!--                  <a class="page-link" href="#">-->
+<!--                    <i class="fas fa-angle-right"></i>-->
+<!--                    <span class="sr-only">Next</span>-->
+<!--                  </a>-->
+<!--                </li>-->
+<!--              </ul>-->
+<!--            </nav>-->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% include "includes/footer.html" %}
+
+  </div>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE --> 
+{% block javascripts %}{% endblock javascripts %}

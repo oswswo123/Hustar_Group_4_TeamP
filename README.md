@@ -1,4 +1,39 @@
 # Hustar 4조 팀프로젝트 진행 참고사항
+### 8.24(수)
+- Ainalyst Django file Final Upload
+- Update postgreSQL.py (main문 삭제)
+- Update insertDB.py (DB에 데이터 입력 시 사용)
+
+### 8.23(화)
+- train, inference 모듈화 완료
+
+### 8.19(금)
+- soft voting 구현 완료
+	- 훨씬더 완화된 확률값을 얻을 수 있음
+- source code들 모듈화 하여 패키지로 묶어낼 예정
+
+### 8.17(수)
+- back translation을 활용한 데이터 증축
+	- pororo-en
+	- googletrans-en
+	- googletrans-zhcn
+	- papago(예정)
+- 해당 데이터들을 활용해 soft voting 기능을 구현하기 위한 준비 완료
+
+### 8.10(수)
+- cross-validation을 활용한 성능 검증 완료.
+- Accuracy는 test data에 대하여 약 93~94 %
+- 다만 inference 할 경우 확률이 너무 극단적으로 나오는 경향이 있음
+- 이를 해결하기 위해 ensemble 기법 중 soft voting을 활용할 예정
+
+### 8.03(수)
+- pretrained model albert를 활용하여 AInalyst 학습성공
+- 데이터의 극히 일부만 사용했기에 성능이 확실한지 확인 필요
+
+### 7.20(수)
+- src directory에 back_translator, text_processor 추가
+- back_translator : 역번역을 통해 data augmentation을 해주는 module
+- text_processor : PDF to TEXT를 비롯한 여러 텍스트 처리를 해주는 module
 
 ### 7.05(화)
 - 본격적인 프로젝트 시작
